@@ -1,7 +1,7 @@
 import numpy as np
-from DSAE_PBHL.model import SAE, SAE_PBHL
-from DSAE_PBHL.deep_model import DSAE, DSAE_PBHL
-from DSAE_PBHL.util.normalizer import Normalizer
+from DSAE_PBHL import DSAE, DSAE_PBHL
+from DSAE_PBHL.util import Normalizer
+import tensorflow as tf
 
 def packing(np_objs):
     return np.concatenate(np_objs, axis=0)
@@ -37,18 +37,16 @@ deltadelta_packed = packing([delta_delta[key] for key in keys])
 speakerid_packed = packing_pb([speaker_id[key] for key in keys], lengths, speaker_N, cold_val=-1)
 
 print("defining networks...")
-structure = [[12, speaker_N], [8, int(speaker_N/10)]]
+structure = [12, 8, 5, 3]
+pb_structure = [speaker_N, int(speaker_N/3)]
 
 static_normalizer = Normalizer()
 delta_normalizer = Normalizer()
 deltadelta_normalizer = Normalizer()
 
-# static_dsae_pbhl = DSAE_PBHL(structure)
-# delta_dsae_pbhl = DSAE_PBHL(structure)
-# deltadelta_dsae_pbhl = DSAE_PBHL(structure)
-static_dsae_pbhl = SAE_PBHL(*structure)
-delta_dsae_pbhl = SAE_PBHL(*structure)
-deltadelta_dsae_pbhl = SAE_PBHL(*structure)
+# static_dsae_pbhl = SAE_PBHL(*structure)
+# delta_dsae_pbhl = SAE_PBHL(*structure)
+# deltadelta_dsae_pbhl = SAE_PBHL(*structure)
 
 print("normalizing data...")
 static_packed = static_normalizer.normalize(static_packed)
@@ -60,16 +58,31 @@ delta_normalizer.save_params("params/delta_normalizer.npz")
 deltadelta_normalizer.save_params("params/deltadelta_normalizer.npz")
 
 print("training networks...")
-static_dsae_pbhl.fit(static_packed, speakerid_packed)
-static_dsae_pbhl.save_params("params/static_dsae_pbhl.npz")
-delta_dsae_pbhl.fit(delta_packed, speakerid_packed)
-delta_dsae_pbhl.save_params("params/delta_dsae_pbhl.npz")
-deltadelta_dsae_pbhl.fit(deltadelta_packed, speakerid_packed)
-deltadelta_dsae_pbhl.save_params("params/deltadelta_dsae_pbhl.npz")
-
+print("static")
+static_dsae_pbhl = DSAE_PBHL(structure, pb_structure, pb_activator=tf.nn.softmax)
+static_dsae_pbhl.init_session()
+static_dsae_pbhl.initialize_variables()
+static_dsae_pbhl.fit(static_packed, speakerid_packed, ckpt_file="./ckpt/static/model.ckpt", summary_prefix="./graph/static/", epoch=10, print_loss=False)
 static_packed = static_dsae_pbhl.feature(static_packed)
+static_dsae_pbhl.close_session()
+tf.reset_default_graph()
+
+print("delta")
+delta_dsae_pbhl = DSAE_PBHL(structure, pb_structure, pb_activator=tf.nn.softmax)
+delta_dsae_pbhl.init_session()
+delta_dsae_pbhl.initialize_variables()
+delta_dsae_pbhl.fit(delta_packed, speakerid_packed, ckpt_file="./ckpt/delta/model.ckpt", summary_prefix="./graph/delta/", epoch=10, print_loss=False)
 delta_packed = delta_dsae_pbhl.feature(delta_packed)
+delta_dsae_pbhl.close_session()
+tf.reset_default_graph()
+
+print("delta_delta")
+deltadelta_dsae_pbhl = DSAE_PBHL(structure, pb_structure, pb_activator=tf.nn.softmax)
+deltadelta_dsae_pbhl.init_session()
+deltadelta_dsae_pbhl.initialize_variables()
+deltadelta_dsae_pbhl.fit(deltadelta_packed, speakerid_packed, ckpt_file="./ckpt/deltadelta/model.ckpt", summary_prefix="./graph/deltadelta/", epoch=10, print_loss=False)
 deltadelta_packed = deltadelta_dsae_pbhl.feature(deltadelta_packed)
+deltadelta_dsae_pbhl.close_session()
 
 print("unpacing data...")
 static_unpacked = unpacking(static_packed, lengths)
