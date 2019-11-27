@@ -27,7 +27,7 @@ def load_datas(train_data_file):
 
 def unpack_durations(dur):
     unpacked = np.zeros(dur.sum())
-    d = np.cumsum(dur[:-1])
+    d = np.cumsum(dur)
     unpacked[d-1] = 1.0
     return unpacked
 
