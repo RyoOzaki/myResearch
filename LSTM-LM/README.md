@@ -1,7 +1,7 @@
 # LSTM language model
 
 ```
-python convert.py --output sentences.npz --word_num 10 --word_stateseq word_stateseq.npz --word_durations word_durations.npz --using_iteration -1
+python convert.py --output sentences.npz --word_num 10 --word_stateseq word_stateseq.npz --word_durations word_durations.npz
 ```
 initialize model and training
 ```
