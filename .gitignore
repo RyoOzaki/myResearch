@@ -104,9 +104,6 @@ venv.bak/
 .mypy_cache/
 
 # other files
-DATA/
-LABEL/
-feature/
 source/
 params/
 figure/
