@@ -55,12 +55,10 @@ print("Done!")
 
 #%%
 print("Loading results....")
-keys = sorted(list(phn_labels.keys()))
-lengths = [phn_labels[key].shape[0] for key in keys]
-
 word_results = np.load("results/word_stateseq.npz")
 letter_results = np.load("results/letter_stateseq.npz")
 duration_results = np.load("results/word_durations.npz")
+keys = sorted(list(word_results.keys()))
 
 cancatenated_phn_label = np.concatenate([phn_labels[key] for key in keys], axis=0)
 cancatenated_wrd_label = np.concatenate([wrd_labels[key] for key in keys], axis=0)
