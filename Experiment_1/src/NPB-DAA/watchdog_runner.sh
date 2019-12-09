@@ -40,6 +40,9 @@ echo "--TARGET=${TARGET}" >> ${WATCHDOG_LOG}
 if "${CONTINUE}" ; then
   echo "--CONTINUE mode" >> ${WATCHDOG_LOG}
 else
+  echo "--train_data=${train_data}" >> ${WATCHDOG_LOG}
+  echo "--phn_label=${phn_label}" >> ${WATCHDOG_LOG}
+  echo "--wrd_label=${wrd_label}" >> ${WATCHDOG_LOG}
   echo "--label=${label}" >> ${WATCHDOG_LOG}
   echo "--begin=${begin}" >> ${WATCHDOG_LOG}
   echo "--end=${end}" >> ${WATCHDOG_LOG}
