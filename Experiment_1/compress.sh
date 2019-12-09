@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #==============================================
-DSAE_STRUCTURE="36 24 16 12 8 5"
+DSAE_STRUCTURE="36 18 9 5"
 DSAE_PBHL_STRUCTURE="4 3"
 
 # compress mcep using DSAE and DSAE-PBHL

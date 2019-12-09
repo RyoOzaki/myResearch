@@ -7,6 +7,19 @@ from DSAE_PBHL import AE, SAE, SAE_PBHL
 from DSAE_PBHL import DSAE, DSAE_PBHL
 from DSAE_PBHL.util import Builder, Normalizer
 
+def flatten_json(json_obj, keyname_prefix=None, dict_obj=None):
+    if dict_obj is None:
+        dict_obj = {}
+    if keyname_prefix is None:
+        keyname_prefix = ""
+    for keyname, subjson in json_obj.items():
+        if type(subjson) == dict:
+            prefix = f"{keyname_prefix}{keyname}/"
+            flatten_json(subjson, keyname_prefix=prefix, dict_obj=dict_obj)
+        else:
+            dict_obj[f"{keyname_prefix}{keyname}"] = subjson
+    return dict_obj
+
 def packing(np_objs):
     return np.concatenate(np_objs, axis=0)
 
@@ -33,9 +46,6 @@ parser.add_argument("--structure", type=int, nargs="+", required=True)
 parser.add_argument("--pb_structure", type=int, nargs=2, required=True)
 
 args = parser.parse_args()
-
-# model_ckpt = args.model or (args.train_data.parent / "DSAE-PBHL_params/model.ckpt")
-# model_ckpt.parent.mkdir(exist_ok=True, parents=True)
 
 print("loading data...")
 npz_obj = np.load(args.train_data)
@@ -69,7 +79,6 @@ with tf.variable_scope("dsae_pbhl"):
 print("normalizing data...")
 normalizer = Normalizer()
 normalized_train_datas = normalizer.normalize(packed_train_datas)
-# normalizer.save_params(model_ckpt.with_name("normalizer.npz"))
 
 print("training networks...")
 epoch = args.epoch
@@ -83,6 +92,7 @@ with tf.Session() as sess:
         dsae.fit_until(sess, i, normalized_train_datas, packed_speaker_ids, epoch, threshold)
     # saver.save(sess, model_ckpt, global_step=1)
     compressed = dsae.hidden_layers_with_eval(sess, normalized_train_datas)[-1]
+    dsae_pbhl_params = sess.run(dsae.params)
 
 print("unpacing data...")
 unpacked = unpacking(compressed, lengths)
@@ -93,7 +103,12 @@ for data, key in zip(unpacked, keys):
     compressed[key] = data
 
 print("saving data...")
-output_file = args.output_file or args.train_data.with_name(f"compressed_{args.train_data.stem}_with_pb.npz")
-np.savez(output_file, **compressed)
+out_file = args.output_file or args.train_data.with_name(f"compressed_{args.train_data.stem}_with_pb.npz")
+out_file.parent.mkdir(exist_ok=True, parents=True)
+param_dir = out_file.with_suffix("")
+param_dir.mkdir(exist_ok=True)
+np.savez(out_file, **compressed)
+normalizer.save_params(param_dir / "normalizer.npz")
+np.savez(param_dir / "dsae.npz", **flatten_json(dsae_pbhl_params))
 
 print("Finished!!")
