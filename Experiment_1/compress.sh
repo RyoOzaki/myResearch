@@ -1,6 +1,12 @@
 #!/bin/bash
 
 #==============================================
+PCA_COMPONENTS="5"
+# compress mcep using PCA
+#   feature/pca_all_speaker.npz (compress mcep_all_speaker.npz)
+python src/Compress/PCA_compress.py --source_file feature/mcep_all_speaker.npz --output_file feature/pca_all_speaker.npz --n_components ${PCA_COMPONENTS}
+
+#==============================================
 DSAE_STRUCTURE="36 18 9 5"
 DSAE_PBHL_STRUCTURE="4 3"
 
