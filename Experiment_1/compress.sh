@@ -4,7 +4,15 @@
 PCA_COMPONENTS="5"
 # compress mcep using PCA
 #   feature/pca_all_speaker.npz (compress mcep_all_speaker.npz)
+#   feature/pca_speaker_H.npz (compress mcep_speaker_H.npz)
+#   feature/pca_speaker_K.npz (compress mcep_speaker_K.npz)
+#   feature/pca_speaker_M.npz (compress mcep_speaker_M.npz)
+#   feature/pca_speaker_N.npz (compress mcep_speaker_N.npz)
 python src/Compress/PCA_compress.py --source_file feature/mcep_all_speaker.npz --output_file feature/pca_all_speaker.npz --n_components ${PCA_COMPONENTS}
+python src/Compress/PCA_compress.py --source_file feature/mcep_speaker_H.npz --output_file feature/pca_speaker_H.npz --n_components ${PCA_COMPONENTS}
+python src/Compress/PCA_compress.py --source_file feature/mcep_speaker_K.npz --output_file feature/pca_speaker_K.npz --n_components ${PCA_COMPONENTS}
+python src/Compress/PCA_compress.py --source_file feature/mcep_speaker_M.npz --output_file feature/pca_speaker_M.npz --n_components ${PCA_COMPONENTS}
+python src/Compress/PCA_compress.py --source_file feature/mcep_speaker_N.npz --output_file feature/pca_speaker_N.npz --n_components ${PCA_COMPONENTS}
 
 #==============================================
 DSAE_STRUCTURE="36 18 9 5"
