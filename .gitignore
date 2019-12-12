@@ -107,3 +107,6 @@ venv.bak/
 source/
 params/
 figure/
+
+# StarGAN-VC
+StarGAN-VC/
