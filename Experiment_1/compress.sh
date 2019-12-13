@@ -33,3 +33,9 @@ python src/DSAE-PBHL/DSAE_train.py --train_data feature/mcep_speaker_H.npz --out
 python src/DSAE-PBHL/DSAE_train.py --train_data feature/mcep_speaker_K.npz --output_file feature/dsae_speaker_K.npz --structure ${DSAE_STRUCTURE}
 python src/DSAE-PBHL/DSAE_train.py --train_data feature/mcep_speaker_M.npz --output_file feature/dsae_speaker_M.npz --structure ${DSAE_STRUCTURE}
 python src/DSAE-PBHL/DSAE_train.py --train_data feature/mcep_speaker_N.npz --output_file feature/dsae_speaker_N.npz --structure ${DSAE_STRUCTURE}
+
+#==============================================
+
+# compress mcep using StarGAN-VC
+#   feature/sgvc_all_speaker.npz (compress mcep_all_speaker_5msec.npz)
+python src/StarGAN-VC/train_stargan-vc.py --train_data feature/mcep_all_speaker_5msec.npz --speaker_id feature/speaker.npz --output_file feature/sgvc_all_speaker.npz --batchsize 8 --gpu 1
