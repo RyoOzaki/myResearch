@@ -61,7 +61,6 @@ default_parameters = {
     "frame_period": 0.005,
     "numcep": 13,
     "nfilt": 26,
-    "preemph": 0.97,
 }
 
 parameters_types = {
@@ -69,7 +68,6 @@ parameters_types = {
     "frame_period": float,
     "numcep": int,
     "nfilt": int,
-    "preemph": float,
 }
 
 parameters_help = {
@@ -77,7 +75,6 @@ parameters_help = {
     "frame_period": "the length of the analysis window in seconds.",
     "numcep": "the number of cepstrum to return.",
     "nfilt": "the number of filters in the filterbank.",
-    "preemph": "apply preemphasis filter with preemph as coefficient. 0 is no filter.",
 }
 
 enabled_feature_types = ["mfcc", "mcep", "spenv", "f0", "ap"]
