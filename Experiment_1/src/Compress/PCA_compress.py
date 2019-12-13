@@ -4,7 +4,8 @@ from sklearn.decomposition import PCA
 from argparse import ArgumentParser
 
 def packing(np_objs):
-    return np.concatenate(np_objs, axis=0)
+    lengths = [data.shape[0] for data in np_objs]
+    return np.concatenate(np_objs, axis=0), lengths
 
 def unpacking(np_obj, lengths):
     cumsum_lens = np.concatenate(([0], np.cumsum(lengths)))
@@ -28,10 +29,8 @@ param_dir.mkdir(exist_ok=True)
 npz_obj = np.load(args.source_file)
 keys = sorted(list(npz_obj.keys()))
 source_datas = [npz_obj[key] for key in keys]
-lengths = [data.shape[0] for data in source_datas]
-T = sum(lengths)
 
-packed_source_datas = packing(source_datas)
+packed_source_datas, lengths = packing(source_datas)
 
 pca = PCA(n_components=args.n_components)
 pca.fit(packed_source_datas)

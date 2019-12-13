@@ -21,18 +21,19 @@ def flatten_json(json_obj, keyname_prefix=None, dict_obj=None):
     return dict_obj
 
 def packing(np_objs):
-    return np.concatenate(np_objs, axis=0)
+    lengths = [data.shape[0] for data in np_objs]
+    return np.concatenate(np_objs, axis=0), lengths
+
+def unpacking(np_obj, lengths):
+    cumsum_lens = np.concatenate(([0], np.cumsum(lengths)))
+    N = len(lengths)
+    return [np_obj[cumsum_lens[i]:cumsum_lens[i+1]] for i in range(N)]
 
 # make onehot
 def packing_pb(label_objs, lengths, speaker_N):
     T = sum(lengths)
     id_array = np.concatenate([np.full(t, id) for t, id in zip(lengths, label_objs)])
     return np.identity(speaker_N)[id_array]
-
-def unpacking(np_obj, lengths):
-    cumsum_lens = np.concatenate(([0], np.cumsum(lengths)))
-    N = len(lengths)
-    return [np_obj[cumsum_lens[i]:cumsum_lens[i+1]] for i in range(N)]
 
 parser = ArgumentParser(formatter_class=ArgumentDefaultsHelpFormatter)
 
@@ -55,12 +56,10 @@ all_speakers = sorted(list(set(map(str, speaker_npz_obj.values()))))
 
 train_datas = [npz_obj[key] for key in keys]
 speaker_ids = [all_speakers.index(speaker_npz_obj[key]) for key in keys]
-lengths = [data.shape[0] for data in train_datas]
-T = sum(lengths)
 speaker_N = len(all_speakers)
 
 print("packing data...")
-packed_train_datas = packing(train_datas)
+packed_train_datas, lengths = packing(train_datas)
 packed_speaker_ids = packing_pb(speaker_ids, lengths, speaker_N)
 
 print("defining networks...")

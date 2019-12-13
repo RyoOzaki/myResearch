@@ -21,15 +21,8 @@ def flatten_json(json_obj, keyname_prefix=None, dict_obj=None):
     return dict_obj
 
 def packing(np_objs):
-    return np.concatenate(np_objs, axis=0)
-
-def packing_pb(np_objs, lengths, speaker_N, hot_val=1, cold_val=0):
-    T = sum(lengths)
-    cumsum_lens = np.concatenate(([0], np.cumsum(lengths)))
-    pb = np.ones((T, speaker_N)) * cold_val
-    for i, id in enumerate(np_objs):
-        pb[cumsum_lens[i]:cumsum_lens[i+1], id] = hot_val
-    return pb
+    lengths = [data.shape[0] for data in np_objs]
+    return np.concatenate(np_objs, axis=0), lengths
 
 def unpacking(np_obj, lengths):
     cumsum_lens = np.concatenate(([0], np.cumsum(lengths)))
@@ -52,11 +45,9 @@ npz_obj = np.load(args.train_data)
 keys = sorted(list(npz_obj.keys()))
 
 train_datas = [npz_obj[key] for key in keys]
-lengths = [data.shape[0] for data in train_datas]
-T = sum(lengths)
 
 print("packing data...")
-packed_train_datas = packing(train_datas)
+packed_train_datas, lengths = packing(train_datas)
 
 print("defining networks...")
 structure = args.structure
