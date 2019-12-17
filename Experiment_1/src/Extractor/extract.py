@@ -43,19 +43,23 @@ def _load_raw_label(f):
 
 def _label_cord(label_file, label_list, length, window_frame, step_frame, init_val=0):
     label_ary = np.ones(length, dtype=int) * init_val
+    Ft = np.zeros(length, dtype=int)
     raw_labels = _load_raw_label(label_file)
     for b,e,l in raw_labels:
         left = int(max(0, floor((2*b-window_frame)/(2*step_frame))))
         right = int(ceil((2*e-window_frame)/(2*step_frame)))
         label_ary[left:right] = label_list.index(l)
-    return label_ary
+        Ft[right-1] = 1
+    return label_ary, Ft
 
 def _label_cord_mfcc_frame(label_file, label_list, length, init_val=0):
     label_ary = np.ones(length, dtype=int) * init_val
+    Ft = np.zeros(length, dtype=int)
     raw_labels = _load_raw_label(label_file)
     for b,e,l in raw_labels:
         label_ary[b:e+1] = label_list.index(l)
-    return label_ary
+        Ft[e] = 1
+    return label_ary, Ft
 
 default_parameters = {
     "samplerate": None,
@@ -232,17 +236,19 @@ for file in source_dir.glob(f"**/*.{extension}"):
         if args.phn_label_extension:
             phn_file = file.with_suffix(f".{args.phn_label_extension}")
             if args.label_format == "mfcc_frame":
-                phn = _label_cord_mfcc_frame(phn_file, phn_label_dict, N)
+                phn, Ft = _label_cord_mfcc_frame(phn_file, phn_label_dict, N)
             else:
-                phn = _label_cord(phn_file, phn_label_dict, N, window_len, step_len)
-            np.savetxt(file.with_suffix(".phn"), np.array(phn), fmt="%d")
+                phn, Ft = _label_cord(phn_file, phn_label_dict, N, window_len, step_len)
+            np.savetxt(file.with_suffix(".phn"), phn, fmt="%d")
+            np.savetxt(file.with_suffix(".Ft_phn"), phn, fmt="%d")
 
         if args.wrd_label_extension:
             wrd_file = file.with_suffix(f".{args.wrd_label_extension}")
             if args.label_format == "mfcc_frame":
-                wrd = _label_cord_mfcc_frame(wrd_file, wrd_label_dict, N)
+                wrd, Ft = _label_cord_mfcc_frame(wrd_file, wrd_label_dict, N)
             else:
-                wrd = _label_cord(wrd_file, wrd_label_dict, N, window_len, step_len)
-            np.savetxt(file.with_suffix(".wrd"), np.array(wrd), fmt="%d")
+                wrd, Ft = _label_cord(wrd_file, wrd_label_dict, N, window_len, step_len)
+            np.savetxt(file.with_suffix(".wrd"), wrd, fmt="%d")
+            np.savetxt(file.with_suffix(".Ft_wrd"), wrd, fmt="%d")
 
 print(f"{cnt} files were process.")

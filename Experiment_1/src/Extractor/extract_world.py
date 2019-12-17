@@ -42,19 +42,25 @@ def _load_raw_label(f):
 
 def _label_cord(label_file, label_list, length, window_frame, step_frame, init_val=0):
     label_ary = np.ones(length, dtype=int) * init_val
+    Ft = np.zeros(length, dtype=int)
     raw_labels = _load_raw_label(label_file)
     for b,e,l in raw_labels:
         left = int(max(0, floor((2*b-window_frame)/(2*step_frame))))
         right = int(ceil((2*e-window_frame)/(2*step_frame)))
         label_ary[left:right] = label_list.index(l)
-    return label_ary
+        if right-1 < length:
+            Ft[right-1] = 1
+    return label_ary, Ft
 
 def _label_cord_mfcc_frame(label_file, label_list, length, init_val=0):
     label_ary = np.ones(length, dtype=int) * init_val
+    Ft = np.zeros(length, dtype=int)
     raw_labels = _load_raw_label(label_file)
     for b,e,l in raw_labels:
         label_ary[b:e+1] = label_list.index(l)
-    return label_ary
+        if e < length:
+            Ft[e] = 1
+    return label_ary, Ft
 
 default_parameters = {
     "samplerate": None,
@@ -134,6 +140,9 @@ if args.label_format != "none":
     phn_label_dict = _load_label_list(source_dir.glob(f"**/*.{args.phn_label_extension}"), sp=sp_kwargs)
     wrd_label_dict = _load_label_list(source_dir.glob(f"**/*.{args.wrd_label_extension}"), sp=sp_kwargs)
 
+    print(f"phn_label_list : {phn_label_dict}")
+    print(f"wrd_label_list : {wrd_label_dict}")
+
 cnt = 0
 print(f"extracting features: {feature_type}")
 for file in source_dir.glob(f"**/*.{extension}"):
@@ -147,6 +156,7 @@ for file in source_dir.glob(f"**/*.{extension}"):
     signal = convert2mono(signal)
 
     _f0, t = pw.dio(signal, samplerate, frame_period=args.frame_period*1000) # 基本周波数の抽出
+    # _f0, t = pw.harvest(signal, samplerate, frame_period=args.frame_period*1000) # 基本周波数の抽出
     f0 = pw.stonemask(signal, _f0, t, samplerate) # 基本周波数の修正
     sp = pw.cheaptrick(signal, f0, t, samplerate)  # スペクトル包絡spectrumの抽出
     ap = pw.d4c(signal, f0, t, samplerate)  # 非周期性指標の抽出
@@ -186,17 +196,19 @@ for file in source_dir.glob(f"**/*.{extension}"):
         if args.phn_label_extension:
             phn_file = file.with_suffix(f".{args.phn_label_extension}")
             if args.label_format == "mfcc_frame":
-                phn = _label_cord_mfcc_frame(phn_file, phn_label_dict, N)
+                phn, Ft = _label_cord_mfcc_frame(phn_file, phn_label_dict, N)
             else:
-                phn = _label_cord(phn_file, phn_label_dict, N, frame_len, frame_len)
-            np.savetxt(file.with_suffix(".phn"), np.array(phn), fmt="%d")
+                phn, Ft = _label_cord(phn_file, phn_label_dict, N, frame_len, frame_len)
+            np.savetxt(file.with_suffix(".phn"), phn, fmt="%d")
+            np.savetxt(file.with_suffix(".Ft_phn"), Ft, fmt="%d")
 
         if args.wrd_label_extension:
             wrd_file = file.with_suffix(f".{args.wrd_label_extension}")
             if args.label_format == "mfcc_frame":
-                wrd = _label_cord_mfcc_frame(wrd_file, wrd_label_dict, N)
+                wrd, Ft = _label_cord_mfcc_frame(wrd_file, wrd_label_dict, N)
             else:
-                wrd = _label_cord(wrd_file, wrd_label_dict, N, frame_len, frame_len)
-            np.savetxt(file.with_suffix(".wrd"), np.array(wrd), fmt="%d")
+                wrd, Ft = _label_cord(wrd_file, wrd_label_dict, N, frame_len, frame_len)
+            np.savetxt(file.with_suffix(".wrd"), wrd, fmt="%d")
+            np.savetxt(file.with_suffix(".Ft_wrd"), Ft, fmt="%d")
 
 print(f"{cnt} files were process.")

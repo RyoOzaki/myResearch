@@ -4,7 +4,7 @@ from argparse import ArgumentParser
 parser = ArgumentParser()
 
 parser.add_argument("--source_dir", type=Path, default=Path("./"), help="source directory of wave files. Default is './'")
-parser.add_argument("--remove_extensions", nargs="*", default=["mfcc", "dmfcc", "ddmfcc", "mcep", "mspec", "logmspec", "spenv", "ap", "f0", "phn", "wrd", "npz"], help="target extensions")
+parser.add_argument("--remove_extensions", nargs="*", default=["mfcc", "dmfcc", "ddmfcc", "mcep", "mspec", "logmspec", "spenv", "ap", "f0", "phn", "Ft_pnh", "wrd", "Ft_wrd", "npz"], help="target extensions")
 
 args = parser.parse_args()
 

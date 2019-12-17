@@ -43,14 +43,22 @@ parser.add_argument("--phn_label", type=Path)
 parser.add_argument("--wrd_label", type=Path)
 
 parser.add_argument("--model", default=default_hypparams_model, help=f"hyper parameters of model.")
+
+parser.add_argument("--figure_dir", type=Path, default="./figures")
+parser.add_argument("--summary_dir", type=Path, default="./summary_files")
+parser.add_argument("--results_dir", type=Path, default="./results")
+
 args = parser.parse_args()
 
 phn_labels = np.load(args.phn_label)
 wrd_labels = np.load(args.wrd_label)
 hypparams_model = args.model
 
-Path("figures").mkdir(exist_ok=True)
-Path("summary_files").mkdir(exist_ok=True)
+figure_dir = args.figure_dir
+figure_dir.mkdir(exist_ok=True, parents=True)
+summary_dir = args.summary_dir
+summary_dir.mkdir(exist_ok=True, parents=True)
+results_dir = args.results_dir
 
 #%% config parse
 print("Loading model config...")
@@ -62,9 +70,9 @@ print("Done!")
 
 #%%
 print("Loading results....")
-word_results = np.load("results/word_stateseq.npz")
-letter_results = np.load("results/letter_stateseq.npz")
-duration_results = np.load("results/word_durations.npz")
+word_results = np.load(results_dir / "word_stateseq.npz")
+letter_results = np.load(results_dir / "letter_stateseq.npz")
+duration_results = np.load(results_dir / "word_durations.npz")
 keys = sorted(list(word_results.keys()))
 
 cancatenated_phn_label = np.concatenate([phn_labels[key] for key in keys], axis=0)
@@ -74,8 +82,8 @@ concatenated_letter_result = np.concatenate([letter_results[key] for key in keys
 concatenated_word_result = np.concatenate([word_results[key] for key in keys], axis=1)
 # concatenated_duration_result = np.concatenate([duration_results[key] for key in keys], axis=1)
 
-log_likelihood = np.loadtxt("summary_files/log_likelihood.txt")
-resample_times = np.loadtxt("summary_files/resample_times.txt")
+log_likelihood = np.loadtxt(summary_dir / "log_likelihood.txt")
+resample_times = np.loadtxt(summary_dir / "resample_times.txt")
 print("Done!")
 
 train_iter = word_results[keys[0]].shape[0]
@@ -108,31 +116,31 @@ print(f"Word ARI: {word_ARI[-1]}")
 plt.clf()
 plt.title("Letter ARI")
 plt.plot(range(train_iter), letter_ARI, ".-")
-plt.savefig("figures/Letter_ARI.png")
+plt.savefig(figure_dir / "Letter_ARI.png")
 
 #%%
 plt.clf()
 plt.title("Word ARI")
 plt.plot(range(train_iter), word_ARI, ".-")
-plt.savefig("figures/Word_ARI.png")
+plt.savefig(figure_dir / "Word_ARI.png")
 
 #%%
 plt.clf()
 plt.title("Log likelihood")
 plt.plot(range(train_iter+1), log_likelihood, ".-")
-plt.savefig("figures/Log_likelihood.png")
+plt.savefig(figure_dir / "Log_likelihood.png")
 
 #%%
 plt.clf()
 plt.title("Resample times")
 plt.plot(range(train_iter), resample_times, ".-")
-plt.savefig("figures/Resample_times.png")
+plt.savefig(figure_dir / "Resample_times.png")
 
 #%%
-np.savetxt("summary_files/Letter_ARI.txt", letter_ARI)
-np.savetxt("summary_files/Letter_macro_F1_score.txt", letter_macro_f1_score)
-np.savetxt("summary_files/Letter_micro_F1_score.txt", letter_micro_f1_score)
-np.savetxt("summary_files/Word_ARI.txt", word_ARI)
-np.savetxt("summary_files/Word_macro_F1_score.txt", word_macro_f1_score)
-np.savetxt("summary_files/Word_micro_F1_score.txt", word_micro_f1_score)
-np.savetxt("summary_files/Sum_of_resample_times.txt", np.array([resample_times.sum()]))
+np.savetxt(summary_dir / "Letter_ARI.txt", letter_ARI)
+np.savetxt(summary_dir / "Letter_macro_F1_score.txt", letter_macro_f1_score)
+np.savetxt(summary_dir / "Letter_micro_F1_score.txt", letter_micro_f1_score)
+np.savetxt(summary_dir / "Word_ARI.txt", word_ARI)
+np.savetxt(summary_dir / "Word_macro_F1_score.txt", word_macro_f1_score)
+np.savetxt(summary_dir / "Word_micro_F1_score.txt", word_micro_f1_score)
+np.savetxt(summary_dir / "Sum_of_resample_times.txt", np.array([resample_times.sum()]))

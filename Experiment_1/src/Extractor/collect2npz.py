@@ -6,7 +6,7 @@ parser = ArgumentParser(formatter_class=ArgumentDefaultsHelpFormatter)
 
 parser.add_argument("--source_dir", type=Path, default=Path("./"), help="source directory of wave files. Default is './'")
 parser.add_argument("--output_dir", type=Path, help="output directory of npz file. Default is same as source_dir")
-parser.add_argument("--collect_extensions", nargs="+", default=["mfcc", "dmfcc", "ddmfcc", "mcep", "mspec", "logmspec", "spenv", "f0", "ap", "phn", "wrd"], help="collect extensions")
+parser.add_argument("--collect_extensions", nargs="+", default=["mfcc", "dmfcc", "ddmfcc", "mcep", "mspec", "logmspec", "spenv", "f0", "ap", "phn", "Ft_pnh", "wrd", "Ft_wrd"], help="collect extensions")
 parser.add_argument("--with_speaker_id", action="store_true", help="if you specified this option, save the speaker_id npz object")
 parser.add_argument("--speaker_dir_layer", type=int, default=1, help="layer of speaker. e.g., source/speaker_1, and you specified source_dir to source/, speaker_dir_layer is 1.")
 
