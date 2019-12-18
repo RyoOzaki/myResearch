@@ -3,7 +3,6 @@ from pathlib import Path
 from argparse import ArgumentParser
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
-import japanize_matplotlib
 
 from configparser import ConfigParser
 
@@ -32,7 +31,7 @@ def mixed_label(label, Ft, clist):
     if Ft.ndim == 1:
         Ft = Ft.reshape((1, Ft.shape[0]))
     colors = [ [ clist[idx] for idx in row_label ] for row_label in label ]
-    for Ftx, Fty in zip(*np.where(Ft == 1)):
+    for Ftx, Fty in zip(*np.where(Ft > 0)):
         colors[Ftx][Fty] = (0, 0, 0, 1)
     return colors
 
@@ -59,7 +58,8 @@ def plot_result(fig, phn_clist, wrd_clist, phn_label, wrd_label, phn_Ft, wrd_Ft,
     # phn result
     ax = plt.subplot2grid((10, 2), (1, 0), rowspan=9, fig=fig)
     # plt.sca(ax)
-    mixed = mixed_label(letter_stateseq, _boundary(letter_stateseq), phn_clist)
+    boundary = _boundary(letter_stateseq) + word_durations # mix letter_stateseq boundary and duration of word
+    mixed = mixed_label(letter_stateseq, boundary, phn_clist)
     ax.matshow(mixed, aspect='auto')
     ax.xaxis.set_ticks_position("bottom")
     ax.set_xlabel("Frame")
@@ -92,18 +92,21 @@ parser.add_argument("--Ft_phn", type=Path, required=True)
 parser.add_argument("--Ft_wrd", type=Path, required=True)
 
 parser.add_argument("--figsize", type=int, nargs=2, default=[16, 8])
+parser.add_argument("--keep_dir", action="store_true")
+
+parser.add_argument("--figure_dir", type=Path, required=True)
 
 args = parser.parse_args()
 
+args.figure_dir.mkdir(parents=True, exist_ok=True)
+
 #%% config parse
-print("Loading model config...")
 config_parser = load_config(args.model)
 section = config_parser["model"]
 word_num = section["word_num"]
 letter_num = section["letter_num"]
 phn_color_list = [cm.tab20(float(i)/letter_num) for i in range(letter_num)]
 wrd_color_list = [cm.tab20(float(i)/word_num) for i in range(word_num)]
-print("Done!")
 
 if args.result_dir:
     result_dir = args.result_dir
@@ -130,10 +133,10 @@ Ft_wrd_label = np.load(args.Ft_wrd)
 
 keys = sorted(list(word_stateseq_npz.keys()))
 
-
+fig = plt.figure(figsize=args.figsize)
 for key in keys:
 
-    fig = plt.figure(figsize=args.figsize)
+    plt.cla()
 
     phnlab = phn_label[key]
     wrdlab = wrd_label[key]
@@ -143,4 +146,10 @@ for key in keys:
     wstsq = word_stateseq_npz[key]
     wdur = word_durations_npz[key]
     plot_result(fig, phn_color_list, wrd_color_list, phnlab, wrdlab, phnFt, wrdFt, lstsq, wstsq, wdur)
-    plt.show()
+    # plt.show()
+    if args.keep_dir:
+        outfile = args.figure_dir / f"{key}.png"
+        outfile.parent.mkdir(exist_ok=True, parents=True)
+    else:
+        outfile = args.figure_dir / f"{key.replace('/', '_')}.png"
+    plt.savefig(outfile)

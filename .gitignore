@@ -107,6 +107,9 @@ venv.bak/
 source/
 params/
 figure/
+NPBDAA_result_sample/
 
 # StarGAN-VC
 StarGAN-VC/
+Experiment_1/segmentation_result/*
+Experiment_1/segmentation_result_figure/*
