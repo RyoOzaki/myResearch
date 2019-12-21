@@ -8,16 +8,18 @@
 #   feature/wrd.npz
 #   feature/speaker.npz
 python src/Extractor/extract_world.py --source_dir dataset/ --feature_type mcep --label_format time --phn_label_extension lab --wrd_label_extension lab2 --sil_label s --frame_period 20E-3 --nfilt 36
-python src/Extractor/collect2npz.py --source_dir dataset/ --output_dir feature/ --collect_extensions mcep phn wrd Ft_phn Ft_wrd --with_speaker_id --speaker_dir_layer 1
+python src/Extractor/collect2npz.py --source_dir dataset/ --output_dir feature/ --collect_extensions mcep  phn wrd Ft_phn Ft_wrd --with_speaker_id --speaker_dir_layer 1
 mv feature/mcep.npz feature/mcep_all_speaker_20msec.npz
 
 #==============================================
 # extract mcep by multispeaker_AIOI data
 # output
 #   feature/mcep_all_speaker_5msec.npz (renamed from mcep.npz)
-python src/Extractor/extract_world.py --source_dir dataset/ --feature_type mcep --frame_period 5E-3 --nfilt 36
-python src/Extractor/collect2npz.py --source_dir dataset/ --output_dir feature/ --collect_extensions mcep --with_speaker_id --speaker_dir_layer 1
+python src/Extractor/extract_world.py --source_dir dataset/ --feature_type mcep f0 ap --frame_period 5E-3 --nfilt 36
+python src/Extractor/collect2npz.py --source_dir dataset/ --output_dir feature/ --collect_extensions mcep f0 ap --with_speaker_id --speaker_dir_layer 1
 mv feature/mcep.npz feature/mcep_all_speaker_5msec.npz
+mv feature/f0.npz feature/f0_all_speaker_5msec.npz
+mv feature/ap.npz feature/ap_all_speaker_5msec.npz
 
 #==============================================
 # pickup each speaker
@@ -33,4 +35,4 @@ python src/Extractor/pickup.py --source_file feature/mcep_all_speaker_20msec.npz
 
 #==============================================
 # clean dataset dir
-python src/Extractor/clean.py --source_dir dataset/ --remove_extensions mcep wrd Ft_wrd phn Ft_phn
+python src/Extractor/clean.py --source_dir dataset/ --remove_extensions mcep f0 ap wrd Ft_wrd phn Ft_phn

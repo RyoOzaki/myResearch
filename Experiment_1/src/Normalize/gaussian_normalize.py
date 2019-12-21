@@ -42,7 +42,7 @@ keys = sorted(list(npz_obj.keys()))
 normalized = {}
 if args.speaker_id is not None:
     speaker_npz = np.load(args.speaker_id)
-    unique_speakers = set(list(map(lambda x: str(x), speaker_npz.values())))
+    unique_speakers = set(list(map(str, speaker_npz.values())))
 
     parameter_means = {}
     parameter_stds = {}

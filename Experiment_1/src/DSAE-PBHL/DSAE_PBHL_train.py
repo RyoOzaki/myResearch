@@ -35,7 +35,6 @@ def packing_pb(label_objs, lengths, speaker_N):
     id_array = np.concatenate([np.full(t, id) for t, id in zip(lengths, label_objs)])
     return np.identity(speaker_N)[id_array]
 
-
 parser = ArgumentParser(formatter_class=ArgumentDefaultsHelpFormatter)
 
 parser.add_argument("--train_data", type=Path, required=True)
