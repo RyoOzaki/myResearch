@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# sh watchdog_runner.sh -t datas/datas.npz -p datas/phn.npz -w datas/wrd.npz
+# sh watchdog_runner.sh -t datas/datas.npz -p datas/phn_all_speaker_20msec.npz -w datas/wrd_all_speaker_20msec.npz
 
 killtree() {
     local _pid=$1

@@ -4,10 +4,10 @@
 # extract mcep, phn, wrd, speaker_id by multispeaker_AIOI data
 # output
 #   feature/mcep_all_speaker_20msec.npz (renamed from mcep.npz)
-#   feature/phn.npz
-#   feature/wrd.npz
-#   feature/Ft_phn.npz
-#   feature/Ft_wrd.npz
+#   feature/phn_all_speaker_20msec.npz
+#   feature/wrd_all_speaker_20msec.npz
+#   feature/Ft_phn_all_speaker_20msec.npz
+#   feature/Ft_wrd_all_speaker_20msec.npz
 #   feature/speaker.npz
 python src/Extractor/extract_world.py \
   --source_dir dataset/ \
