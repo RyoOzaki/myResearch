@@ -89,3 +89,4 @@ python src/Extractor/pickup.py \
 python src/Extractor/clean.py \
   --source_dir dataset/ \
   --remove_extensions mcep f0 ap wrd Ft_wrd phn Ft_phn
+  
