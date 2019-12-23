@@ -67,6 +67,7 @@ default_parameters = {
     "frame_period": 0.005,
     "numcep": 13,
     "nfilt": 26,
+    "fftsize": 1024,
 }
 
 parameters_types = {
@@ -74,6 +75,7 @@ parameters_types = {
     "frame_period": float,
     "numcep": int,
     "nfilt": int,
+    "fftsize": int
 }
 
 parameters_help = {
@@ -81,6 +83,7 @@ parameters_help = {
     "frame_period": "the length of the analysis window in seconds.",
     "numcep": "the number of cepstrum to return.",
     "nfilt": "the number of filters in the filterbank.",
+    "fftsize": "the number of fft window size"
 }
 
 enabled_feature_types = ["mfcc", "mcep", "spenv", "f0", "ap"]
@@ -158,8 +161,8 @@ for file in source_dir.glob(f"**/*.{extension}"):
     _f0, t = pw.dio(signal, samplerate, frame_period=args.frame_period*1000) # 基本周波数の抽出
     # _f0, t = pw.harvest(signal, samplerate, frame_period=args.frame_period*1000) # 基本周波数の抽出
     f0 = pw.stonemask(signal, _f0, t, samplerate) # 基本周波数の修正
-    sp = pw.cheaptrick(signal, f0, t, samplerate)  # スペクトル包絡spectrumの抽出
-    ap = pw.d4c(signal, f0, t, samplerate)  # 非周期性指標の抽出
+    sp = pw.cheaptrick(signal, f0, t, samplerate, fft_size=args.fftsize)  # スペクトル包絡spectrumの抽出
+    ap = pw.d4c(signal, f0, t, samplerate, fft_size=args.fftsize)  # 非周期性指標の抽出
     mcep = pw.code_spectral_envelope(sp, samplerate, args.nfilt) # メルケプストラムの抽出
 
     if "spenv" in feature_type:
