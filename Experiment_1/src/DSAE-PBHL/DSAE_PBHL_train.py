@@ -1,4 +1,6 @@
 import numpy as np
+import warnings
+warnings.filterwarnings('ignore')
 import tensorflow as tf
 from pathlib import Path
 from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
