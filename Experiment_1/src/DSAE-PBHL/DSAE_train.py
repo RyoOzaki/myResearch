@@ -7,7 +7,7 @@ from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 
 from DSAE_PBHL import AE, SAE, SAE_PBHL
 from DSAE_PBHL import DSAE, DSAE_PBHL
-from DSAE_PBHL.util import Builder, Normalizer
+from DSAE_PBHL.util import Builder
 
 def flatten_json(json_obj, keyname_prefix=None, dict_obj=None):
     if dict_obj is None:
@@ -62,10 +62,6 @@ builder.print_recipe()
 with tf.variable_scope("dsae"):
     dsae = builder.build()
 
-print("normalizing data...")
-normalizer = Normalizer()
-normalized_train_datas = normalizer.normalize(packed_train_datas)
-
 print("training networks...")
 epoch = args.epoch
 threshold = args.threshold
@@ -75,9 +71,9 @@ with tf.Session() as sess:
     sess.run(initializer)
     for i in range(L-1):
         print(f"Training {i+1} th network (all:{L-1})")
-        dsae.fit_until(sess, i, normalized_train_datas, epoch, threshold)
+        dsae.fit_until(sess, i, packed_train_datas, epoch, threshold)
     # saver.save(sess, model_ckpt, global_step=1)
-    compressed = dsae.hidden_layers_with_eval(sess, normalized_train_datas)[-1]
+    compressed = dsae.hidden_layers_with_eval(sess, packed_train_datas)[-1]
     dsae_params = sess.run(dsae.params)
 
 print("unpacing data...")
@@ -94,7 +90,6 @@ out_file.parent.mkdir(exist_ok=True, parents=True)
 param_dir = out_file.with_suffix("")
 param_dir.mkdir(exist_ok=True)
 np.savez(out_file, **compressed)
-normalizer.save_params(param_dir / "normalizer.npz")
 np.savez(param_dir / "dsae.npz", **flatten_json(dsae_params))
 
 print("Finished!!")
