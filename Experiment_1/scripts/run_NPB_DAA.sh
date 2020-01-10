@@ -90,6 +90,12 @@ sh src/NPB-DAA/watchdog_runner.sh \
   -w feature/wrd_all_speaker_20msec.npz \
   -l segmentation_result/sgvc_all_speaker_20msec
 
+# sh src/NPB-DAA/watchdog_runner.sh \
+#   -t sgvc_all_speaker_20msec/snapshot_feature/sgvc_all_speaker_20msec_epoch_02000.npz \
+#   -p feature/phn_all_speaker_20msec.npz \
+#   -w feature/wrd_all_speaker_20msec.npz \
+#   -l segmentation_result/sgvc_all_speaker_20msec_epoch_02000
+
 sh src/NPB-DAA/watchdog_runner.sh \
   -t feature/sgvc_new_all_speaker_20msec.npz \
   -p feature/phn_all_speaker_20msec.npz \

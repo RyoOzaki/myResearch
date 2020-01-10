@@ -1,6 +1,13 @@
 #!/bin/bash
 
 #==============================================
+# Volume normalization
+python src/Volume_normalizer/normalize.py \
+  --source_dir dataset/ \
+  --max_amplitude 30000 \
+  --replace
+
+#==============================================
 # extract mcep, phn, wrd, speaker_id by multispeaker_AIOI data
 # output
 #   feature/mcep_all_speaker_20msec.npz (renamed from mcep.npz)
@@ -18,7 +25,13 @@ python src/Extractor/extract_world.py \
   --sil_label s \
   --frame_period 20E-3 \
   --nfilt 36 \
-  --fftsize 1024
+  --fftsize 2048
+
+python src/Extractor/extract.py \
+  --source_dir dataset/ \
+  --feature_type mfcc \
+  --winlen 20E-3 \
+  --winstep 20E-3 
 
 python src/Extractor/collect2npz.py \
   --source_dir dataset/ \
@@ -43,7 +56,7 @@ python src/Extractor/extract_world.py \
   --source_dir dataset/ \
   --feature_type mcep f0 ap \
   --frame_period 5E-3 \
-  --fftsize 1024 \
+  --fftsize 2048 \
   --nfilt 36
 
 python src/Extractor/collect2npz.py \
@@ -88,5 +101,4 @@ python src/Extractor/pickup.py \
 # clean dataset dir
 python src/Extractor/clean.py \
   --source_dir dataset/ \
-  --remove_extensions mcep f0 ap wrd Ft_wrd phn Ft_phn
-  
+  --remove_extensions mfcc dmfcc ddmfcc mcep f0 ap wrd Ft_wrd phn Ft_phn
