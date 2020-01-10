@@ -10,6 +10,14 @@ from modules.utility import *
 import re
 from math import ceil, floor
 
+def padding(signal, samplerate, winlen, winstep):
+    flen = int(samplerate * winlen)
+    fstep = int(samplerate * winstep)
+    mod = (signal.shape[0] - flen) % fstep
+    pad = np.zeros((fstep - mod, ), dtype=signal.dtype)
+    signal = np.concatenate([signal, pad], axis=0)
+    return signal
+
 def _load_label_list(files, sp=None):
     s = set()
     for f in files:
@@ -49,6 +57,8 @@ def _label_cord(label_file, label_list, length, window_frame, step_frame, init_v
         left = int(max(0, floor((2*b-window_frame)/(2*step_frame))))
         right = int(ceil((2*e-window_frame)/(2*step_frame)))
         label_ary[left:right] = label_list.index(l)
+        if right > length:
+            right = length
         Ft[right-1] = 1
     return label_ary, Ft
 
@@ -191,6 +201,7 @@ for file in source_dir.glob(f"**/*.{extension}"):
     samplerate = args.samplerate or fs # if the samplerate is specified, use specified one, and else, use the wave files one.
     signal = downsampling(signal, fs, samplerate) # fs -> samplerate
     signal = convert2mono(signal)
+    signal = padding(signal, samplerate, parameters["winlen"], parameters["winstep"])
     nfft = parameters["nfft"] or int(samplerate * parameters["winlen"])
 
     if "mfcc" in feature_type:
