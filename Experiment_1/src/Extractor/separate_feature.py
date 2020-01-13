@@ -4,7 +4,7 @@ from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 
 parser = ArgumentParser(formatter_class=ArgumentDefaultsHelpFormatter)
 
-parser.add_argument("--source_file", type=Path, required=True, help="feature file to be separated (npz)")
+parser.add_argument("--source", type=Path, required=True, help="feature file to be separated (npz)")
 parser.add_argument("--show_dimension", action="store_true", help="show the dimension of feature and exit")
 parser.add_argument("--prefix", default="", help="prefix of name, you can use specific option #b and #e")
 parser.add_argument("--single_prefix", default="", help="prefix of name when #b==#e, you can use specific option #b")
@@ -15,13 +15,13 @@ parser.add_argument("--recipe", required=True, nargs="+", type=int, help="recipe
 
 args = parser.parse_args()
 
-source_file = args.source_file
-npz_obj = np.load(source_file)
+source = args.source
+npz_obj = np.load(source)
 keys = list(npz_obj.keys())
 source_dim = npz_obj[keys[0]].shape[1]
 
 if args.show_dimension:
-    print(f"Dimension of {source_file} is {source_dim}.")
+    print(f"Dimension of {source} is {source_dim}.")
     exit(0)
 
 if args.recipe is None:
@@ -51,7 +51,7 @@ for b, e in zip(cumsum_recipe[:-1], cumsum_recipe[1:]):
     else:
         prefix = args.prefix.replace("#b", str(b)).replace("#e", str(e-1))
         suffix = args.suffix.replace("#b", str(b)).replace("#e", str(e-1))
-    output_file = source_file.with_name(f"{prefix}{source_file.stem}{suffix}.npz")
+    output_file = source.with_name(f"{prefix}{source.stem}{suffix}.npz")
     output_dict = {}
     for key in keys:
         output_dict[key] = npz_obj[key][:, b:e]

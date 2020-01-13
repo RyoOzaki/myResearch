@@ -96,23 +96,23 @@ mv feature/ap.npz feature/ap_all_speaker_5msec.npz
 #   feature/mfcc_speaker_M_20msec.npz (pickup by mfcc_all_speaker_20msec.npz)
 #   feature/mfcc_speaker_N_20msec.npz (pickup by mfcc_all_speaker_20msec.npz)
 python src/Extractor/pickup.py \
-  --source_file feature/mfcc_all_speaker_20msec.npz \
-  --output_file feature/mfcc_speaker_H_20msec.npz \
+  --source feature/mfcc_all_speaker_20msec.npz \
+  --output feature/mfcc_speaker_H_20msec.npz \
   --keyword speaker_H
 
 python src/Extractor/pickup.py \
-  --source_file feature/mfcc_all_speaker_20msec.npz \
-  --output_file feature/mfcc_speaker_K_20msec.npz \
+  --source feature/mfcc_all_speaker_20msec.npz \
+  --output feature/mfcc_speaker_K_20msec.npz \
   --keyword speaker_K
 
 python src/Extractor/pickup.py \
-  --source_file feature/mfcc_all_speaker_20msec.npz \
-  --output_file feature/mfcc_speaker_M_20msec.npz \
+  --source feature/mfcc_all_speaker_20msec.npz \
+  --output feature/mfcc_speaker_M_20msec.npz \
   --keyword speaker_M
 
 python src/Extractor/pickup.py \
-  --source_file feature/mfcc_all_speaker_20msec.npz \
-  --output_file feature/mfcc_speaker_N_20msec.npz \
+  --source feature/mfcc_all_speaker_20msec.npz \
+  --output feature/mfcc_speaker_N_20msec.npz \
   --keyword speaker_N
 
 #==============================================
@@ -123,23 +123,23 @@ python src/Extractor/pickup.py \
 #   feature/mcep_speaker_M_5msec.npz (pickup by mcep_all_speaker_5msec.npz)
 #   feature/mcep_speaker_N_5msec.npz (pickup by mcep_all_speaker_5msec.npz)
 python src/Extractor/pickup.py \
-  --source_file feature/mcep_all_speaker_5msec.npz \
-  --output_file feature/mcep_speaker_H_5msec.npz \
+  --source feature/mcep_all_speaker_5msec.npz \
+  --output feature/mcep_speaker_H_5msec.npz \
   --keyword speaker_H
 
 python src/Extractor/pickup.py \
-  --source_file feature/mcep_all_speaker_5msec.npz \
-  --output_file feature/mcep_speaker_K_5msec.npz \
+  --source feature/mcep_all_speaker_5msec.npz \
+  --output feature/mcep_speaker_K_5msec.npz \
   --keyword speaker_K
 
 python src/Extractor/pickup.py \
-  --source_file feature/mcep_all_speaker_5msec.npz \
-  --output_file feature/mcep_speaker_M_5msec.npz \
+  --source feature/mcep_all_speaker_5msec.npz \
+  --output feature/mcep_speaker_M_5msec.npz \
   --keyword speaker_M
 
 python src/Extractor/pickup.py \
-  --source_file feature/mcep_all_speaker_5msec.npz \
-  --output_file feature/mcep_speaker_N_5msec.npz \
+  --source feature/mcep_all_speaker_5msec.npz \
+  --output feature/mcep_speaker_N_5msec.npz \
   --keyword speaker_N
 
 #==============================================

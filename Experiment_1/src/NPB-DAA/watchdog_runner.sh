@@ -12,7 +12,7 @@ killtree() {
     kill -${_sig} ${_pid}
 }
 
-INTERVAL=300 # sec
+INTERVAL=30 # sec
 TARGET=log.txt # target file of watch
 CONTINUE=false # flag of run runner.sh or continue.sh
 WATCHDOG_LOG=watchdog_log.txt

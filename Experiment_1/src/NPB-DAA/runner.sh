@@ -24,6 +24,8 @@ cp -r hypparams/ ${label}/
 cp ${train_data} ${label}/
 cp ${phn_label} ${label}/
 cp ${wrd_label} ${label}/
+cp Ft_${phn_label} ${label}/
+cp Ft_${wrd_label} ${label}/
 
 mkdir -p results
 mkdir -p parameters

@@ -11,20 +11,20 @@ def in_checker(keyword, key):
 
 parser = ArgumentParser(formatter_class=ArgumentDefaultsHelpFormatter)
 
-parser.add_argument("--source_file", type=Path, required=True)
-parser.add_argument("--output_file", type=Path, required=True)
+parser.add_argument("--source", type=Path, required=True)
+parser.add_argument("--output", type=Path, required=True)
 parser.add_argument("--regexp", action="store_true")
 parser.add_argument("--keyword", required=True)
 
 args = parser.parse_args()
 
-source_file = args.source_file
-output_file = args.output_file
+source = args.source
+output = args.output
 keyword = args.keyword
 
-output_file.parent.mkdir(parents=True, exist_ok=True)
+output.parent.mkdir(parents=True, exist_ok=True)
 
-source_npz = np.load(source_file)
+source_npz = np.load(source)
 
 if args.regexp:
     checker = regexp_match_checker
@@ -38,5 +38,5 @@ for key, value in source_npz.items():
         output_dict[key] = value
         i += 1
 
-np.savez(output_file, **output_dict)
+np.savez(output, **output_dict)
 print(f"{i} files are pickuped!!")

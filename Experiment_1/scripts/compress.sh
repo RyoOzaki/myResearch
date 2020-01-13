@@ -11,20 +11,20 @@ DSAE_PBHL_STRUCTURE="4 3"
 
 python src/DSAE-PBHL/DSAE_train.py \
   --train_data feature/uninorm_concat_mfcc_all_speaker_20msec.npz \
-  --output_file feature/dsae_uninorm_concat_mfcc_all_speaker_20msec.npz \
+  --output feature/dsae_uninorm_concat_mfcc_all_speaker_20msec.npz \
   --structure ${DSAE_STRUCTURE}
 
 python src/DSAE-PBHL/DSAE_PBHL_train.py \
   --train_data feature/uninorm_concat_mfcc_all_speaker_20msec.npz \
   --speaker_id feature/speaker.npz  \
-  --output_file feature/dsae_pbhl_uninorm_concat_mfcc_all_speaker_20msec.npz \
+  --output feature/dsae_pbhl_uninorm_concat_mfcc_all_speaker_20msec.npz \
   --structure ${DSAE_STRUCTURE} \
   --pb_structure ${DSAE_PBHL_STRUCTURE}
 
 python src/DSAE-PBHL/DSAE_PBHL_v2_train.py \
   --train_data feature/uninorm_concat_mfcc_all_speaker_20msec.npz \
   --speaker_id feature/speaker.npz  \
-  --output_file feature/dsae_pbhl_v2_uninorm_concat_mfcc_all_speaker_20msec.npz \
+  --output feature/dsae_pbhl_v2_uninorm_concat_mfcc_all_speaker_20msec.npz \
   --structure ${DSAE_STRUCTURE} \
   --pb_structure ${DSAE_PBHL_STRUCTURE}
 
@@ -39,22 +39,22 @@ DSAE_STRUCTURE="13 8 5 3"
 
 python src/DSAE-PBHL/DSAE_train.py \
   --train_data feature/uninorm_mfcc_speaker_H_20msec.npz \
-  --output_file feature/dsae_uninorm_mfcc_speaker_H_20msec.npz \
+  --output feature/dsae_uninorm_mfcc_speaker_H_20msec.npz \
   --structure ${DSAE_STRUCTURE}
 
 python src/DSAE-PBHL/DSAE_train.py \
   --train_data feature/uninorm_mfcc_speaker_K_20msec.npz \
-  --output_file feature/dsae_uninorm_mfcc_speaker_K_20msec.npz \
+  --output feature/dsae_uninorm_mfcc_speaker_K_20msec.npz \
   --structure ${DSAE_STRUCTURE}
 
 python src/DSAE-PBHL/DSAE_train.py \
   --train_data feature/uninorm_mfcc_speaker_M_20msec.npz \
-  --output_file feature/dsae_uninorm_mfcc_speaker_M_20msec.npz \
+  --output feature/dsae_uninorm_mfcc_speaker_M_20msec.npz \
   --structure ${DSAE_STRUCTURE}
 
 python src/DSAE-PBHL/DSAE_train.py \
   --train_data feature/uninorm_mfcc_speaker_N_20msec.npz \
-  --output_file feature/dsae_uninorm_mfcc_speaker_N_20msec.npz \
+  --output feature/dsae_uninorm_mfcc_speaker_N_20msec.npz \
   --structure ${DSAE_STRUCTURE}
 
 #==============================================
@@ -66,7 +66,7 @@ python src/DSAE-PBHL/DSAE_train.py \
 python src/StarGAN-VC/train_stargan-vc.py \
   --train_data feature/gaunorm_with_f0_spkind_mcep_all_speaker_5msec.npz \
   --speaker_id feature/speaker.npz \
-  --output_file feature/sgvc_gaunorm_with_f0_spkind_mcep_all_speaker_20msec.npz \
+  --output feature/sgvc_gaunorm_with_f0_spkind_mcep_all_speaker_20msec.npz \
   --batchsize 4 \
   --epoch 6000 \
   --gpu 1
@@ -78,15 +78,7 @@ python src/StarGAN-VC/train_stargan-vc.py \
 python src/StarGAN-VC/train_stargan-vc_new.py \
   --train_data feature/gaunorm_with_f0_spkind_mcep_all_speaker_5msec.npz \
   --speaker_id feature/speaker.npz \
-  --output_file feature/sgvc_new_gaunorm_with_f0_spkind_mcep_all_speaker_20msec.npz \
+  --output feature/sgvc_new_gaunorm_with_f0_spkind_mcep_all_speaker_20msec.npz \
   --batchsize 4 \
   --epoch 6000 \
   --gpu 1
-
-# python src/StarGAN-VC/train_stargan-vc_pp.py \
-#   --train_data feature/gaunorm_with_f0_spkind_mcep_all_speaker_5msec.npz \
-#   --speaker_id feature/speaker.npz \
-#   --output_file feature/sgvc_pp_all_speaker_20msec.npz \
-#   --batchsize 8 \
-#   --epoch 6000 \
-#   --gpu 1

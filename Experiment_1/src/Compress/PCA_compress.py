@@ -14,19 +14,19 @@ def unpacking(np_obj, lengths):
 
 parser = ArgumentParser()
 
-parser.add_argument("--source_file", type=Path, required=True)
-parser.add_argument("--output_file", type=Path)
+parser.add_argument("--source", type=Path, required=True)
+parser.add_argument("--output", type=Path)
 
 parser.add_argument("--n_components", type=int, required=True)
 
 args = parser.parse_args()
 
-out_file = args.output_file or args.source_file.with_name(f"compressed_{args.source_file.stem}_pca.npz")
+out_file = args.output or args.source.with_name(f"compressed_{args.source.stem}_pca.npz")
 out_file.parent.mkdir(exist_ok=True, parents=True)
 param_dir = out_file.with_suffix("")
 param_dir.mkdir(exist_ok=True)
 
-npz_obj = np.load(args.source_file)
+npz_obj = np.load(args.source)
 keys = sorted(list(npz_obj.keys()))
 source_datas = [npz_obj[key] for key in keys]
 

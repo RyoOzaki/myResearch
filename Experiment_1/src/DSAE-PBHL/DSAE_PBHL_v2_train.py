@@ -40,7 +40,7 @@ def packing_pb(label_objs, lengths, speaker_N):
 parser = ArgumentParser(formatter_class=ArgumentDefaultsHelpFormatter)
 
 parser.add_argument("--train_data", type=Path, required=True)
-parser.add_argument("--output_file", type=Path)
+parser.add_argument("--output", type=Path)
 parser.add_argument("--speaker_id", type=Path, required=True)
 parser.add_argument("--epoch", type=int, default=10)
 parser.add_argument("--threshold", type=float, default=1.0E-60)
@@ -100,7 +100,7 @@ for data, key in zip(unpacked, keys):
     compressed[key] = data
 
 print("saving data...")
-out_file = args.output_file or args.train_data.with_name(f"compressed_{args.train_data.stem}_with_pb.npz")
+out_file = args.output or args.train_data.with_name(f"compressed_{args.train_data.stem}_with_pb.npz")
 out_file.parent.mkdir(exist_ok=True, parents=True)
 param_dir = out_file.with_suffix("")
 param_dir.mkdir(exist_ok=True)

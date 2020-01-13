@@ -90,7 +90,7 @@ parser.add_argument("--mode", type=str, choices=["none", "phn", "spk"])
 parser.add_argument("--savefig", type=Path)
 
 parser.add_argument("--with_pca", action="store_true")
-parser.add_argument("--n_components", type=int, default=2)
+parser.add_argument("--n_components", type=int)
 
 args = parser.parse_args()
 
@@ -110,6 +110,7 @@ keys = sorted(list(source.keys()))
 
 if args.with_pca:
     packed_source, lengths = packing([source[key] for key in keys])
+    dim = args.n_components or packed_source.shape[1]
     pca = PCA(n_components=args.n_components)
     pca.fit(packed_source)
     packed_source = pca.transform(packed_source)

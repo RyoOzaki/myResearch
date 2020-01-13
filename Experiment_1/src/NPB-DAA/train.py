@@ -201,6 +201,7 @@ for t in trange(train_iter):
     resample_times[t] = resample_model_time
     save_params_as_npz(t+1, model)
     # save_model_as_pickle(t+1, model)
+    print(model.word_list)
     print(f"log_likelihood:{model.log_likelihood()}")
     print(f"resample_model:{resample_model_time}")
 

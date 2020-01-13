@@ -28,20 +28,20 @@ def normalize(source_datas, source_f0):
 
 parser = ArgumentParser()
 
-parser.add_argument("--source_file", type=Path, required=True)
+parser.add_argument("--source", type=Path, required=True)
 parser.add_argument("--source_f0", type=Path, required=True)
 parser.add_argument("--speaker_id", type=Path)
 
-parser.add_argument("--output_file", type=Path)
+parser.add_argument("--output", type=Path)
 
 args = parser.parse_args()
 
-out_file = args.output_file or args.source_file.with_name(f"normalized_{args.source_file.stem}_with_f0.npz")
+out_file = args.output or args.source.with_name(f"normalized_{args.source.stem}_with_f0.npz")
 out_file.parent.mkdir(exist_ok=True, parents=True)
 param_dir = out_file.with_suffix("")
 param_dir.mkdir(exist_ok=True)
 
-npz_obj = np.load(args.source_file)
+npz_obj = np.load(args.source)
 f0_npz_obj = np.load(args.source_f0)
 keys = sorted(list(npz_obj.keys()))
 

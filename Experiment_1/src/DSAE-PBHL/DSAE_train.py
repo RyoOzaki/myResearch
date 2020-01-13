@@ -34,7 +34,7 @@ def unpacking(np_obj, lengths):
 parser = ArgumentParser(formatter_class=ArgumentDefaultsHelpFormatter)
 
 parser.add_argument("--train_data", type=Path, required=True)
-parser.add_argument("--output_file", type=Path)
+parser.add_argument("--output", type=Path)
 parser.add_argument("--epoch", type=int, default=10)
 parser.add_argument("--threshold", type=float, default=1.0E-60)
 # parser.add_argument("--model", type=Path)
@@ -85,7 +85,7 @@ for data, key in zip(unpacked, keys):
     compressed[key] = data
 
 print("saving data...")
-out_file = args.output_file or args.train_data.with_name(f"compressed_{args.train_data.stem}.npz")
+out_file = args.output or args.train_data.with_name(f"compressed_{args.train_data.stem}.npz")
 out_file.parent.mkdir(exist_ok=True, parents=True)
 param_dir = out_file.with_suffix("")
 param_dir.mkdir(exist_ok=True)
