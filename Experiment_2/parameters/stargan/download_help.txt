@@ -1,0 +1,2 @@
+filt_sgvc_gaunorm_with_f0_spkind_mcep_all_speaker_20msec_final3:12
+filt_sgvc_gaunorm_with_f0_spkind_mcep_all_speaker_20msec_final1:01

@@ -1,0 +1,8 @@
+speaker_H/aioi_uo_ie
+speaker_H/aue_ao
+speaker_K/aioi_uo_ie
+speaker_K/aue_ao
+speaker_M/aioi_uo_ie
+speaker_M/aue_ao
+speaker_N/aioi_uo_ie
+speaker_N/aue_ao
