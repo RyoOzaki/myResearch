@@ -21,7 +21,7 @@ parser.add_argument("--n_components", type=int, required=True)
 
 args = parser.parse_args()
 
-out_file = args.output or args.source.with_name(f"compressed_{args.source.stem}_pca.npz")
+out_file = args.output or args.source.with_name(f"pca_{args.source.stem}.npz")
 out_file.parent.mkdir(exist_ok=True, parents=True)
 param_dir = out_file.with_suffix("")
 param_dir.mkdir(exist_ok=True)

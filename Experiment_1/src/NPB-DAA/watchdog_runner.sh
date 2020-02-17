@@ -21,13 +21,14 @@ label=sample_results
 begin=1
 end=20
 
-while getopts ct:p:w:l:b:e: OPT
+while getopts ct:p:w:s:l:b:e: OPT
 do
   case $OPT in
     "c" ) CONTINUE=true ;;
     "t" ) train_data="${OPTARG}" ;;
     "p" ) phn_label="${OPTARG}" ;;
     "w" ) wrd_label="${OPTARG}" ;;
+    "s" ) spk_id="${OPTARG}" ;;
     "l" ) label="${OPTARG}" ;;
     "b" ) begin="${OPTARG}" ;;
     "e" ) end="${OPTARG}" ;;
@@ -56,7 +57,12 @@ echo -n "start process..." >> ${WATCHDOG_LOG}
 if "${CONTINUE}" ; then
   sh continue.sh &
 else
-  sh src/NPB-DAA/runner.sh -t ${train_data} -p ${phn_label} -w ${wrd_label} -l ${label} -b ${begin} -e ${end} &
+  if [ "${spk_id}" = "" ];
+  then
+    sh src/NPB-DAA/runner.sh -t ${train_data} -p ${phn_label} -w ${wrd_label} -l ${label} -b ${begin} -e ${end} &
+  else
+    sh src/NPB-DAA/runner.sh -t ${train_data} -p ${phn_label} -w ${wrd_label} -s ${spk_id} -l ${label} -b ${begin} -e ${end} &
+  fi
 fi
 PID=$!
 echo "done!" >> ${WATCHDOG_LOG}

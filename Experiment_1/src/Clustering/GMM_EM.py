@@ -9,6 +9,7 @@ parser = ArgumentParser()
 parser.add_argument("--source", type=Path, required=True)
 parser.add_argument("--phn", type=Path, required=True)
 parser.add_argument("--n_components", type=int, required=True)
+parser.add_argument("--trial", type=int, default=1)
 
 args = parser.parse_args()
 
@@ -21,9 +22,14 @@ datas = np.concatenate([source[key] for key in keys], axis=0)
 labels = np.concatenate([phn[key] for key in keys], axis=0)
 N, D = datas.shape
 
-gmm = GaussianMixture(n_components=args.n_components, max_iter=1000)
-gmm.fit(datas)
+aris = np.zeros(args.trial)
+for t in range(args.trial):
+    gmm = GaussianMixture(n_components=args.n_components, max_iter=1000)
+    gmm.fit(datas)
 
-lab = gmm.predict(datas)
+    lab = gmm.predict(datas)
 
-print(f"ARI: {adjusted_rand_score(lab, labels)}")
+    aris[t] = adjusted_rand_score(lab, labels)
+
+print(f"ARI: {aris}")
+print(f"summary: {aris.mean()} +- {aris.std()}")

@@ -85,7 +85,7 @@ for data, key in zip(unpacked, keys):
     compressed[key] = data
 
 print("saving data...")
-out_file = args.output or args.train_data.with_name(f"compressed_{args.train_data.stem}.npz")
+out_file = args.output or args.train_data.with_name(f"dsae_{args.train_data.stem}.npz")
 out_file.parent.mkdir(exist_ok=True, parents=True)
 param_dir = out_file.with_suffix("")
 param_dir.mkdir(exist_ok=True)

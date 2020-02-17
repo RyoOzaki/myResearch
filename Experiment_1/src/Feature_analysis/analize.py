@@ -5,12 +5,21 @@ from util.utility import separate_speaker, get_separated_values
 import matplotlib.pyplot as plt
 import itertools
 from sklearn.decomposition import PCA
+import copy
 
-def plot_datas(data, ax, bins, color, alpha=0.3, xlim=None, ylim=None):
+def plot_datas(data, ax, bins, color=None, hist_alpha=None, data_alpha=None, xlim=None, ylim=None):
+    hist_color = None
+    data_color = None
     if color is not None:
-        color = list(color)
-        color[-1] = alpha
-        color = tuple(color)
+        color_tmp = list(color)
+
+        hist_color = copy.copy(color_tmp)
+        hist_color[-1] = hist_alpha
+        hist_color = tuple(hist_color)
+
+        data_color = copy.copy(color_tmp)
+        data_color[-1] = data_alpha
+        data_color = tuple(data_color)
     dim = data.shape[1]
     xlim_given = False
     ylim_given = False
@@ -25,9 +34,9 @@ def plot_datas(data, ax, bins, color, alpha=0.3, xlim=None, ylim=None):
     for x, y in itertools.product(range(dim), repeat=2):
         axes = ax[y, x]
         if x == y:
-            axes.hist(data[:, x], bins=bins, color=color)
+            axes.hist(data[:, x], bins=bins, color=hist_color)
         else:
-            axes.scatter(data[:, x], data[:, y], marker=".", color=color)
+            axes.scatter(data[:, x], data[:, y], marker=".", color=data_color)
             if not xlim_given and y < x:
                 xlim = axes.get_xlim()
                 x_minmax[0] = min(x_minmax[0], xlim[0])
@@ -85,6 +94,10 @@ parser.add_argument("--phn", type=Path)
 parser.add_argument("--cmap", type=str, default="tab10")
 parser.add_argument("--bins", type=int)
 parser.add_argument("--figsize", type=int, nargs=2, default=[12, 8])
+parser.add_argument("--alpha", type=float, default=0.3)
+parser.add_argument("--hist_alpha", type=float)
+parser.add_argument("--data_alpha", type=float)
+
 parser.add_argument("--mode", type=str, choices=["none", "phn", "spk"])
 
 parser.add_argument("--savefig", type=Path)
@@ -94,7 +107,9 @@ parser.add_argument("--n_components", type=int)
 
 args = parser.parse_args()
 
-if args.phn is not None and args.speaker_id is not None:
+if args.mode is not None:
+    mode = args.mode
+elif args.phn is not None and args.speaker_id is not None:
     mode = args.mode
     while mode not in ["phn", "spk", "none"]:
         mode = input("Which do you want plot (phn / spk / none) > ")
@@ -107,6 +122,9 @@ else:
 
 source = np.load(args.source)
 keys = sorted(list(source.keys()))
+
+hist_alpha = args.hist_alpha or args.alpha
+data_alpha = args.data_alpha or args.alpha
 
 if args.with_pca:
     packed_source, lengths = packing([source[key] for key in keys])
@@ -150,7 +168,7 @@ else:
     for i in range(N):
         if datas[i].shape[0] == 0:
             continue
-        plot_datas(datas[i], ax, args.bins, color=cmap(i), xlim=xlim, ylim=ylim)
+        plot_datas(datas[i], ax, args.bins, color=cmap(i), hist_alpha=hist_alpha, data_alpha=data_alpha, xlim=xlim, ylim=ylim)
 
 fig.suptitle(f"{args.source.stem}", fontsize=24)
 

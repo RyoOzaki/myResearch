@@ -6,7 +6,7 @@ from python_speech_features.base import delta
 parser = ArgumentParser()
 
 parser.add_argument("--source", type=Path, required=True)
-parser.add_argument("--output", type=Path, required=True)
+parser.add_argument("--output", type=Path)
 parser.add_argument("--size", type=int, default=2)
 
 args = parser.parse_args()

@@ -31,7 +31,13 @@ parser.add_argument("--output", type=Path)
 
 args = parser.parse_args()
 
-out_file = args.output or args.source.with_name(f"normalized_{args.source.stem}.npz")
+if args.output is None:
+    if args.speaker_id is None:
+        out_file = args.source.with_name(f"gaunorm_{args.source.stem}.npz")
+    else:
+        out_file = args.source.with_name(f"gaunorm_spkind_{args.source.stem}.npz")
+else:
+    out_file = args.output
 out_file.parent.mkdir(exist_ok=True, parents=True)
 param_dir = out_file.with_suffix("")
 param_dir.mkdir(exist_ok=True)

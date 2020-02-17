@@ -1,10 +1,9 @@
 #!/bin/bash
 
 # sh plot.sh -r sgvc_all_speaker
+result_dir="segmentation_result"
 
-rdirs=`ls segmentation_result`
-
-for rdir in ${rdirs};
+for result_name in `ls ${result_dir}`;
 do
-  sh plot.sh -r ${rdir} & 
+  sh scripts/plot.sh -r ${result_dir} -n ${result_name} &
 done

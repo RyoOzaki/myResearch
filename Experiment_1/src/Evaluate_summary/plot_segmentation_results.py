@@ -134,6 +134,8 @@ Ft_wrd_label = np.load(args.Ft_wrd)
 keys = sorted(list(word_stateseq_npz.keys()))
 
 fig = plt.figure(figsize=args.figsize)
+segmentation_result_dir = args.figure_dir / "segmentation"
+segmentation_result_dir.mkdir(exist_ok=True)
 for key in keys:
 
     plt.cla()
@@ -148,8 +150,8 @@ for key in keys:
     plot_result(fig, phn_color_list, wrd_color_list, phnlab, wrdlab, phnFt, wrdFt, lstsq, wstsq, wdur)
     # plt.show()
     if args.keep_dir:
-        outfile = args.figure_dir / f"{key}.png"
+        outfile = segmentation_result_dir / f"{key}.png"
         outfile.parent.mkdir(exist_ok=True, parents=True)
     else:
-        outfile = args.figure_dir / f"{key.replace('/', '_')}.png"
+        outfile = segmentation_result_dir / f"{key.replace('/', '_')}.png"
     plt.savefig(outfile)

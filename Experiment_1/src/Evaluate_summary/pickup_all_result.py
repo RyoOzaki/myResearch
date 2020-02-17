@@ -28,7 +28,8 @@ log_likelihoods = {}
 i = 0
 for dir in result_dir.glob("*"):
     summary_dir = dir / "summary_files"
-    if summary_dir.exists():
+    if (summary_dir / "resample_times.npy").exists():
+        print(summary_dir)
         letter_ARI[dir.stem] = np.load(summary_dir / "letter_ARI.npy")
         letter_micro_F1[dir.stem] = np.load(summary_dir / "letter_micro_F1.npy")
         letter_macro_F1[dir.stem] = np.load(summary_dir / "letter_macro_F1.npy")

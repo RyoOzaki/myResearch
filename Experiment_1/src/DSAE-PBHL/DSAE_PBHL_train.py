@@ -89,22 +89,33 @@ with tf.Session() as sess:
         dsae.fit_until(sess, i, packed_train_datas, packed_speaker_ids, epoch, threshold)
     # saver.save(sess, model_ckpt, global_step=1)
     compressed = dsae.hidden_layers_with_eval(sess, packed_train_datas)[-1]
+    compressed_pb = dsae.hidden_layer_pb_with_eval(sess, packed_train_datas, packed_speaker_ids)
     dsae_pbhl_params = sess.run(dsae.params)
 
 print("unpacing data...")
 unpacked = unpacking(compressed, lengths)
+unpacked_pb = unpacking(compressed_pb, lengths)
 
 print("making feature dict...")
 compressed = {}
 for data, key in zip(unpacked, keys):
     compressed[key] = data
+compressed_pb = {}
+for data, key in zip(unpacked_pb, keys):
+    compressed_pb[key] = data
+pb_means = {}
+for speaker in all_speakers:
+    spk_keys = [key for key in keys if speaker_npz_obj[key] == speaker]
+    concat_pb = np.concatenate([compressed_pb[key] for key in spk_keys], axis=0)
+    pb_means[speaker] = concat_pb.mean(axis=0)
 
 print("saving data...")
-out_file = args.output or args.train_data.with_name(f"compressed_{args.train_data.stem}_with_pb.npz")
+out_file = args.output or args.train_data.with_name(f"dsae_pbhl_{args.train_data.stem}.npz")
 out_file.parent.mkdir(exist_ok=True, parents=True)
 param_dir = out_file.with_suffix("")
 param_dir.mkdir(exist_ok=True)
 np.savez(out_file, **compressed)
 np.savez(param_dir / "dsae.npz", **flatten_json(dsae_pbhl_params))
+np.savez(param_dir / "pb_means.npz", **pb_means)
 
 print("Finished!!")

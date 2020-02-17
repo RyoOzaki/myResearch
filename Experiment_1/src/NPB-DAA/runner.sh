@@ -5,13 +5,15 @@
 label=sample_results
 begin=1
 end=20
+spk_id=""
 
-while getopts t:p:w:l:b:e: OPT
+while getopts t:p:w:s:l:b:e: OPT
 do
   case $OPT in
     "t" ) train_data="${OPTARG}" ;;
     "p" ) phn_label="${OPTARG}" ;;
     "w" ) wrd_label="${OPTARG}" ;;
+    "s" ) spk_id="${OPTARG}" ;;
     "l" ) label="${OPTARG}" ;;
     "b" ) begin="${OPTARG}" ;;
     "e" ) end="${OPTARG}" ;;
@@ -24,8 +26,6 @@ cp -r hypparams/ ${label}/
 cp ${train_data} ${label}/
 cp ${phn_label} ${label}/
 cp ${wrd_label} ${label}/
-cp Ft_${phn_label} ${label}/
-cp Ft_${wrd_label} ${label}/
 
 mkdir -p results
 mkdir -p parameters
@@ -44,11 +44,21 @@ do
   rm -rf log.txt
 
   echo "#!/bin/bash" > continue.sh
-  echo "sh src/NPB-DAA/runner.sh -t ${train_data} -p ${phn_label} -w ${wrd_label} -l ${label} -b ${i} -e ${end}" >> continue.sh
-
+  if [ "${spk_id}" = "" ];
+  then
+    echo "sh src/NPB-DAA/runner.sh -t ${train_data} -p ${phn_label} -w ${wrd_label} -l ${label} -b ${i} -e ${end}" >> continue.sh
+  else
+    echo "sh src/NPB-DAA/runner.sh -t ${train_data} -p ${phn_label} -w ${wrd_label} -s ${spk_id} -l ${label} -b ${i} -e ${end}" >> continue.sh
+  fi
   python src/NPB-DAA/train.py --train_data ${train_data} | tee log.txt
   echo "summary starting..." >> log.txt
-  python src/NPB-DAA/summary.py --phn_label ${phn_label} --wrd_label ${wrd_label} | tee -a log.txt
+
+  if [ "${spk_id}" = "" ];
+  then
+    python src/NPB-DAA/summary.py --phn_label ${phn_label} --wrd_label ${wrd_label} | tee -a log.txt
+  else
+    python src/NPB-DAA/summary.py --phn_label ${phn_label} --wrd_label ${wrd_label} --speaker_id ${spk_id} | tee -a log.txt
+  fi
   echo "summary finished" >> log.txt
 
   mkdir -p ${label}/${i_str}/
