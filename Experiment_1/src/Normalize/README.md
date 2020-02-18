@@ -40,10 +40,10 @@ python uniform_normalize.py \
 
 ### Another outputs
 
- * "--speaker\id"の指定が無い場合<br>
+ * "--speaker\_id"の指定が無い場合<br>
 出力ファイルと同名のディレクトリ内に"min.npy"と"max.npy"というファイル名で元データの最小値ベクトルと最大値ベクトルを出力．
 
-* "--speaker\id"が指定されている場合<br>
+* "--speaker\_id"が指定されている場合<br>
 出力ファイルと同名のディレクトリ内に"mins.npz"と"maxs.npz"というファイル名で各話者の最小値ベクトルと最大値ベクトルを出力．
 
 ----
@@ -82,10 +82,10 @@ python gaussian_normalize.py \
 
 ### Another outputs
 
- * "--speaker\id"の指定が無い場合<br>
+ * "--speaker\_id"の指定が無い場合<br>
 出力ファイルと同名のディレクトリ内に"mean.npy"と"std.npy"というファイル名で元データの平均ベクトルと標準偏差ベクトルを出力．
 
-* "--speaker\id"が指定されている場合<br>
+* "--speaker\_id"が指定されている場合<br>
 出力ファイルと同名のディレクトリ内に"means.npz"と"stds.npz"というファイル名で各話者の平均ベクトルと標準偏差ベクトルを出力．
 
 ----
@@ -127,10 +127,10 @@ python gaussian_normalize_with_f0.py \
 
 ### Another outputs
 
- * "--speaker\id"の指定が無い場合<br>
+ * "--speaker\_id"の指定が無い場合<br>
 出力ファイルと同名のディレクトリ内に"mean.npy"と"std.npy"というファイル名で元データの平均ベクトルと標準偏差ベクトルを出力．
 加えて，出力ファイルと同名のディレクトリ内に"lf0_mean.npy"と"lf0_std.npy"というファイル名でlog f0の平均ベクトルと標準偏差ベクトルを出力．
 
-* "--speaker\id"が指定されている場合<br>
+* "--speaker\_id"が指定されている場合<br>
 出力ファイルと同名のディレクトリ内に"means.npz"と"stds.npz"というファイル名で各話者の平均ベクトルと標準偏差ベクトルを出力．
 加えて，出力ファイルと同名のディレクトリ内に"lf0_means.npz"と"lf0_stds.npz"というファイル名で各話者のlog f0の平均ベクトルと標準偏差ベクトルを出力．
