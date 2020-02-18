@@ -6,7 +6,7 @@ from pathlib import Path
 parser = ArgumentParser()
 
 parser.add_argument("--source_dir", type=Path, required=True)
-parser.add_argument("--max_amplitude", type=float, required=True)
+parser.add_argument("--max_amplitude", type=float, default=30000)
 
 group = parser.add_mutually_exclusive_group(required=True)
 group.add_argument("--output_dir", type=Path)

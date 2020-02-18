@@ -12,7 +12,7 @@ parser.add_argument("--size", type=int, default=2)
 args = parser.parse_args()
 
 source = args.source
-output = args.output
+output = args.output or args.source.with_name(f"delta_{args.source.name}")
 output.parent.mkdir(parents=True, exist_ok=True)
 
 source_npz = np.load(source)
