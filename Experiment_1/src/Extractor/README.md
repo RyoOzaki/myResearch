@@ -45,12 +45,12 @@ None
 | --format | wave | wave / sph のうちどれか |
 | --extension | wav | 対象ファイルの拡張子 |
 | --feature_type | mfcc | all / mfcc / mcep / mspec / logmspec のうちどれか (複数選択可，allはすべて) |
-| --samplerate | [\*1] | サンプリング周波数 |
+| --samplerate | \[\*1\] | サンプリング周波数 |
 | --winlen | 0.025 | ウィンドウ幅 (sec) |
 | --winstep | 0.01 | シフト幅 (sec) |
 | --numcep | 13 | ケプストラムの次元数 |
 | --nfilt | 26 | フィルタバンク数 |
-| --nfft | [\*2] | FFTサイズ |
+| --nfft | \[\*2\] | FFTサイズ |
 | --lowfreq | 0 | 最低周波数 |
 | --highfreq |  | 最高周波数 |
 | --preemph | 0.97 | プリエンファシス係数 |
@@ -63,10 +63,10 @@ None
 | --wrd_label_extension | | 単語ラベルの拡張子 |
 | --sil_label | | 無音を表すラベル |
 
-[\*1]:
+\[\*1\]:
 指定が無い場合は対象ファイル自体のサンプリング周波数．
 
-[\*2]:
+\[\*2\]:
 指定が無い場合は"--winlen"と同じ
 
 ### Another outputs
@@ -107,7 +107,7 @@ None
 | --format | wave | wave / sph のうちどれか |
 | --extension | wav | 対象ファイルの拡張子 |
 | --feature_type | mfcc | all / mfcc / mcep / spenv / f0 / ap のうちどれか (複数選択可，allはすべて) |
-| --samplerate | [\*1] | サンプリング周波数 |
+| --samplerate | \[\*1\] | サンプリング周波数 |
 | --frame_period | 0.005 | ウィンドウ幅・シフト幅 (sec) |
 | --numcep | 13 | ケプストラムの次元数 |
 | --nfilt | 26 | フィルタバンク数 |
@@ -118,7 +118,7 @@ None
 | --wrd_label_extension | | 単語ラベルの拡張子 |
 | --sil_label | | 無音を表すラベル |
 
-[\*1]:
+\[\*1\]:
 指定が無い場合は対象ファイル自体のサンプリング周波数．
 
 ### Another outputs
@@ -148,11 +148,11 @@ None
 |----------|---------|------|
 | --source_dir | ./ | 対象ファイルのディレクトリ |
 | --output_dir | --source_dir | 出力ディレクトリ |
-| --collect_extensions | [\*1] | npzファイルに集めるファイル拡張子 |
+| --collect_extensions | \[\*1\] | npzファイルに集めるファイル拡張子 |
 | --with_speaker_id | | 話者情報を持つnpzファイルも同時に作成する |
-| --speaker_dir_layer | 1 | --source_dirからみた話者ディレクトリの相対位置 [\*2] |
+| --speaker_dir_layer | 1 | --source_dirからみた話者ディレクトリの相対位置 \[\*2\] |
 
-[\*1]:
+\[\*1\]:
 デフォルト値に以下の拡張子が指定されている．
 * mfcc
 * dmfcc
@@ -168,7 +168,7 @@ None
 * wrd
 * Ft_wrd
 
-[\*2]:
+\[\*2\]:
 --source\_dirを0とした時の相対位置で指定．
 例えば，"source/speaker\_1"が話者1のディレクトリの様な構造を持ち，" --source\_dir source/"と指定された場合には，"speaker_dir_layer 1"を指定する.
 
@@ -199,10 +199,10 @@ python unpack.py \
 #### Optional arguments
 | Argument | Default | Help |
 |----------|---------|------|
-| --output_dir | [\*1] | 出力ディレクトリ |
+| --output_dir | \[\*1\] | 出力ディレクトリ |
 | --keep_dir | | ディレクトリ構造を保つ |
 
-[\*1]:
+\[\*1\]:
 --source_dirの親ディレクトリ
 
 ### Another outputs
@@ -228,9 +228,9 @@ None
 | Argument | Default | Help |
 |----------|---------|------|
 | --source_dir | ./ | 対象ファイルのディレクトリ |
-| --remove_extensions | [\*1] | 削除するファイル拡張子 |
+| --remove_extensions | \[\*1\] | 削除するファイル拡張子 |
 
-[\*1]:
+\[\*1\]:
 デフォルト値に以下の拡張子が指定されている．
 * mfcc
 * dmfcc
@@ -272,10 +272,10 @@ python delta.py \
 #### Optional arguments
 | Argument | Default | Help |
 |----------|---------|------|
-| --output | [\*1] | 出力ファイル |
+| --output | \[\*1\] | 出力ファイル |
 | --size | 2 | 微分近似で用いる点数 |
 
-[\*1]:
+\[\*1\]:
 指定が無い場合は，入力ファイル名先頭に"delta\_"を付したファイルに出力．
 例えば，"--source dir1/dir2/source.npz"が指定されたとき，出力ファイルは"dir1/dir2/delta\_source.npz"．
 
@@ -334,7 +334,7 @@ python filtering.py \
 #### Optional arguments
 | Argument | Default | Help |
 |----------|---------|------|
-| --output | [\*1] | 出力ファイル |
+| --output | \[\*1\] | 出力ファイル |
 | --width | 5 | 窓サイズ |
 | --mode | none | none / triangle / gaussian のうちどれか |
 | --triangle_grad | 1.0 | 三角窓の傾き |
@@ -342,7 +342,7 @@ python filtering.py \
 | --gaussian_sigma | 1.0 | ガウス窓の分散 |
 | --scale | 1.0 | スケール (全体に掛ける) |
 
-[\*1]:
+\[\*1\]:
 指定が無い場合は，入力ファイル名先頭に"filt\_"を付したファイルに出力．
 例えば，"--source dir1/dir2/source.npz"が指定されたとき，出力ファイルは"dir1/dir2/filt\_source.npz"．
 
@@ -370,25 +370,25 @@ python separate_feature.py \
 | Argument | Help |
 |----------|------|
 | --source | 対象ファイル |
-| --recipe | 分割次元 [\*1] |
+| --recipe | 分割次元 \[\*1\] |
 
 #### Optional arguments
 | Argument | Default | Help |
 |----------|---------|------|
 | --show_dimension | | 入力ファイルの次元数を表示して終了 |
-| --single_prefix | | 出力が1次元であった時の先頭の文字列 [\*2] |
-| --single_suffix | (#b) | 出力が1次元であった時の末尾の文字列 [\*2] |
-| --prefix | | 先頭の文字列 [\*2] |
-| --suffix | (#b-#e) | 末尾の文字列 [\*2] |
+| --single_prefix | | 出力が1次元であった時の先頭の文字列 \[\*2\] |
+| --single_suffix | (#b) | 出力が1次元であった時の末尾の文字列 \[\*2\] |
+| --prefix | | 先頭の文字列 \[\*2\] |
+| --suffix | (#b-#e) | 末尾の文字列 \[\*2\] |
 
 
-[\*1]:
+\[\*1\]:
 分割する次元数を順に指定する．
 例えば，13次元の特徴量を5, 5, 3次元に分割したい際には，"--recipe 5 5 3"と指定する．
 また，5, 5, 残りのように分割したい際は，"--recipe 5 5 0"のように0を用いることができる．
 しかし，0は一度しか利用できない．
 
-[\*2]:
+\[\*2\]:
 \#bは対象次元のうちの先頭，\#eは対象次元のうちの末尾を表す．
 例えば，13次元を"--recipe 7 6"のように分割した際には，初めの7次元の特徴量は\#b=0, \#e=6となり，残りの6次元の特徴量は\#b=7, \#e=12となる．
 

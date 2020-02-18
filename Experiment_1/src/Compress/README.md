@@ -23,9 +23,9 @@ python PCA_compress.py \
 #### Optional arguments
 | Argument | Default | Help |
 |----------|---------|------|
-| --output | [\*1] | 出力ファイル |
+| --output | \[\*1\] | 出力ファイル |
 
-[\*1]:
+\[\*1\]:
 指定が無い場合は，入力ファイル名先頭に"pca\_"を付したファイルに出力．
 例えば，"--source dir1/dir2/source.npz"が指定されたとき，出力ファイルは"dir1/dir2/pca\_source.npz"．
 

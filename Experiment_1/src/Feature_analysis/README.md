@@ -44,7 +44,7 @@ python analyze.py \
 |----------|---------|------|
 | --speaker_id | | 話者ファイル |
 | --phn | | 音素ファイル |
-| --mode | | none / phn / spk のうちどれか [\*1] |
+| --mode | | none / phn / spk のうちどれか \[\*1\] |
 | --with_pca | | PCAを用いて次元圧縮を行う |
 | --n_components | | PCAを用いた次元圧縮における次元数 |
 | --cmap | tab10 | matplotlibのカラーマップ |
@@ -54,7 +54,7 @@ python analyze.py \
 | --hist_alpha | --alpha | ヒストグラムのアルファ値 |
 | --data_alpha | --alpha | 散布図の各点のアルファ値 |
 
-[\*1]:
+\[\*1\]:
 指定が無い場合，自動的に判断される．
 ただし，"--phn"と"--speaker\_id"が同時に指定された場合，コンソール上にてどのモードで表示するかを入力する必要がある．
 
@@ -92,7 +92,7 @@ python plot_pca.py \
 #### Optional arguments
 | Argument | Default | Help |
 |----------|---------|------|
-| --output_dir | [\*1] | 出力ディレクトリ |
+| --output_dir | \[\*1\] | 出力ディレクトリ |
 | --format | pdf | 出力の拡張子 |
 | --phn_list | | 図に表示する音素ラベル |
 | --not_show | | --phn_listのうち表示しない音素ラベル |
@@ -100,7 +100,7 @@ python plot_pca.py \
 | --cmap | tab10 | matplotlibのカラーマップ |
 | --swap_second | | y軸をx軸に対して反転 (y = -y) |
 
-[\*1]:
+\[\*1\]:
 指定が無い場合は，入力ファイル名先頭に"figure"ディレクトリに入力ファイルの名前のディレクトリになる．
 
 ### Another outputs

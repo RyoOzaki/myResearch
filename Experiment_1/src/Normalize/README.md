@@ -24,18 +24,18 @@ python uniform_normalize.py \
 #### Optional arguments
 | Argument | Default | Help |
 |----------|---------|------|
-| --output | [\*1] | 出力ファイル |
-| --speaker_id | | 話者ファイル [\*2] |
+| --output | \[\*1\] | 出力ファイル |
+| --speaker_id | | 話者ファイル \[\*2\] |
 | --min_value | 0.0 | 正規化後の最小値 |
 | --max_value | 1.0 | 正規化後の最大値 |
 
-[\*1]:
+\[\*1\]:
 指定が無い場合は，入力ファイル名先頭に"uninorm\_"を付したファイルに出力．
 例えば，"--train_data dir1/dir2/source.npz"が指定されたとき，出力ファイルは"dir1/dir2/uninorm\_source.npz"．
 ただし，"--speaker\_id"が指定されている場合は，入力ファイル名先頭に"uninorm\_spkind\_"を付したファイルに出力．
 例えば，"--train_data dir1/dir2/source.npz"が指定されたとき，出力ファイルは"dir1/dir2/uninorm\_spkind\_source.npz"．
 
-[\*2]:
+\[\*2\]:
 "--speaker\_id"が指定されている場合は，話者ごとに最小値と最大値を算出し正規化を行う．
 
 ### Another outputs
@@ -68,16 +68,16 @@ python gaussian_normalize.py \
 #### Optional arguments
 | Argument | Default | Help |
 |----------|---------|------|
-| --output | [\*1] | 出力ファイル |
-| --speaker_id | | 話者ファイル [\*2] |
+| --output | \[\*1\] | 出力ファイル |
+| --speaker_id | | 話者ファイル \[\*2\] |
 
-[\*1]:
+\[\*1\]:
 指定が無い場合は，入力ファイル名先頭に"gaunorm\_"を付したファイルに出力．
 例えば，"--train_data dir1/dir2/source.npz"が指定されたとき，出力ファイルは"dir1/dir2/gaunorm\_source.npz"．
 ただし，"--speaker\_id"が指定されている場合は，入力ファイル名先頭に"gaunorm\_spkind\_"を付したファイルに出力．
 例えば，"--train_data dir1/dir2/source.npz"が指定されたとき，出力ファイルは"dir1/dir2/gaunorm\_spkind\_source.npz"．
 
-[\*2]:
+\[\*2\]:
 "--speaker\_id"が指定されている場合は，話者ごとに各次元で標準化(平均0, 分散1)を行う．
 
 ### Another outputs
@@ -113,16 +113,16 @@ python gaussian_normalize_with_f0.py \
 #### Optional arguments
 | Argument | Default | Help |
 |----------|---------|------|
-| --output | [\*1] | 出力ファイル |
-| --speaker_id | | 話者ファイル [\*2] |
+| --output | \[\*1\] | 出力ファイル |
+| --speaker_id | | 話者ファイル \[\*2\] |
 
-[\*1]:
+\[\*1\]:
 指定が無い場合は，入力ファイル名先頭に"gaunorm\_with\_f0\_"を付したファイルに出力．
 例えば，"--train_data dir1/dir2/source.npz"が指定されたとき，出力ファイルは"dir1/dir2/gaunorm\_with\_f0\_source.npz"．
 ただし，"--speaker\_id"が指定されている場合は，入力ファイル名先頭に"gaunorm\_with\_f0\_spkind\_"を付したファイルに出力．
 例えば，"--train_data dir1/dir2/source.npz"が指定されたとき，出力ファイルは"dir1/dir2/gaunorm\_with\_f0\_spkind\_source.npz"．
 
-[\*2]:
+\[\*2\]:
 "--speaker\_id"が指定されている場合は，話者ごとに各次元で標準化(平均0, 分散1)を行う．
 
 ### Another outputs
