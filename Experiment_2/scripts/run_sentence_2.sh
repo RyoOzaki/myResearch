@@ -29,6 +29,8 @@ do
     --stargan_generator ${param_dir}/StarGANVC/2000.gen.npz \
     --output_prefix out_files_2/stargan_unigram/${tspk}/out \
     --mode ML \
+    --flat_f0 \
+    --flat_ap \
     --size ${size} \
     --unique
 done
@@ -57,6 +59,8 @@ do
     --stargan_generator ${param_dir}/StarGANVC/2000.gen.npz \
     --output_prefix out_files_2/stargan_bigram/${tspk}/out \
     --mode ML \
+    --flat_f0 \
+    --flat_ap \
     --size ${size} \
     --unique
 
@@ -87,6 +91,8 @@ do
     --stargan_generator ${param_dir}/StarGANVC/2000.gen.npz \
     --output_prefix out_files_2/stargan_lstm/${tspk}/out \
     --mode ML \
+    --flat_f0 \
+    --flat_ap \
     --size ${size} \
     --unique
 

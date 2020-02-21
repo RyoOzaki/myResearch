@@ -25,6 +25,8 @@ do
     --stargan_generator ${param_dir}/StarGANVC/2000.gen.npz \
     --output_prefix out_files/stargan/${tspk}/out \
     --mode ML \
+    --flat_f0 \
+    --flat_ap \
     --sentences 0 \
     --sentences 1 \
     --sentences 2 \
@@ -61,6 +63,8 @@ do
     --pb_param feature/dsae_pbhl_uninorm_mcep_all_speaker_20msec/pb_means.npz \
     --output_prefix out_files/dsae_pbhl/${tspk}/out \
     --mode ML \
+    --flat_f0 \
+    --flat_ap \
     --sentences 0 \
     --sentences 1 \
     --sentences 2 \
@@ -92,6 +96,8 @@ do
     --target_speaker ${tspk} \
     --output_prefix out_files/baseline/${tspk}/out \
     --mode ML \
+    --flat_f0 \
+    --flat_ap \
     --sentences 0 \
     --sentences 1 \
     --sentences 2 \

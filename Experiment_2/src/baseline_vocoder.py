@@ -23,7 +23,7 @@ def expanding_label(label_src, width=4):
 parser = ArgumentParser(fromfile_prefix_chars='@', formatter_class=ArgumentDefaultsHelpFormatter)
 
 parser.add_argument("--samplerate", type=int, default=48000)
-parser.add_argument("--fftsize", type=int)
+parser.add_argument("--fftsize", type=int, default=1024)
 parser.add_argument("--frame_period", type=float, default=5E-3)
 
 parser.add_argument("--sentences_file", type=Path, required=True)
@@ -33,6 +33,9 @@ parser.add_argument("--letter_stateseq", type=Path, required=True)
 parser.add_argument("--ap", type=Path, required=True)
 parser.add_argument("--f0", type=Path, required=True)
 parser.add_argument("--mcep", type=Path, required=True)
+
+parser.add_argument("--flat_f0", action="store_true")
+parser.add_argument("--flat_ap", action="store_true")
 
 parser.add_argument("--parameter", type=Path)
 
@@ -44,6 +47,7 @@ parser.add_argument("--output_prefix", type=Path)
 
 parser.add_argument("--sentences", action="append", type=int, nargs="+")
 parser.add_argument("--size", type=int, default=1)
+parser.add_argument("--unique", action="store_true")
 
 parser.add_argument("--mode", choices=["ML", "RND"], default="ML")
 
@@ -71,14 +75,14 @@ if args.sentences is None:
     elif args.LM == "LSTM":
         snt_generator = LSTMLM_generator(args.LSTM_model, args.sentences_file)
 
-ap_generator = AP_generator(args.letter_num, src_ap, letter_stateseq=src_letter_stateseq, flat=param_flat, mode=args.mode)
-f0_generator = F0_generator(args.letter_num, src_f0, letter_stateseq=src_letter_stateseq, flat=param_flat, mode=args.mode)
+ap_generator = AP_generator(args.letter_num, src_ap, letter_stateseq=src_letter_stateseq, flat=args.flat_ap, mode=args.mode)
+f0_generator = F0_generator(args.letter_num, src_f0, letter_stateseq=src_letter_stateseq, flat=args.flat_f0, mode=args.mode)
 feat_generator = NPBDAA_generator(args.parameter, mode=args.mode)
 
 mcep_generator = MCEP_generator(args.letter_num, src_mcep, letter_stateseq=src_letter_stateseq, mode=args.mode)
 
 if args.sentences is None:
-    sentences = snt_generator.generate(size=args.size)
+    sentences = snt_generator.generate(size=args.size, unique=args.unique)
 else:
     sentences = args.sentences
 print(f"sentences: {sentences}")

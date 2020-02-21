@@ -28,6 +28,8 @@ do
     --stargan_generator ${param_dir}/StarGANVC/2000.gen.npz \
     --output_prefix out_files/stargan/${tspk}/out \
     --mode ML \
+    --flat_f0 \
+    --flat_ap \
     @${param_dir}/LSTMLM/pickuped_sentences.txt
 
 done
@@ -58,6 +60,8 @@ do
     --pb_param feature/dsae_pbhl_uninorm_mcep_all_speaker_20msec/pb_means.npz \
     --output_prefix out_files/dsae_pbhl/${tspk}/out \
     --mode ML \
+    --flat_f0 \
+    --flat_ap \
     @${param_dir}/LSTMLM/pickuped_sentences.txt
 done
 
@@ -77,6 +81,8 @@ do
     --target_speaker ${tspk} \
     --output_prefix out_files/topline/${tspk}/out \
     --mode ML \
+    --flat_f0 \
+    --flat_ap \
     --key_of_pickuped_sentences @parameters/key_of_pickuped_sentences.txt
 
 done
@@ -103,5 +109,7 @@ do
     --target_speaker ${tspk} \
     --output_prefix out_files/baseline/${tspk}/out \
     --mode ML \
+    --flat_f0 \
+    --flat_ap \
     @${param_dir}/LSTMLM/pickuped_sentences.txt
 done

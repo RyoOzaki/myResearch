@@ -14,13 +14,16 @@ from Basic_generator.MCEP_generator import MCEP_generator
 parser = ArgumentParser(fromfile_prefix_chars='@', formatter_class=ArgumentDefaultsHelpFormatter)
 
 parser.add_argument("--samplerate", type=int, default=48000)
-parser.add_argument("--fftsize", type=int)
+parser.add_argument("--fftsize", type=int, default=1024)
 parser.add_argument("--frame_period", type=float, default=5E-3)
 
 parser.add_argument("--phn", type=Path, required=True)
 parser.add_argument("--ap", type=Path, required=True)
 parser.add_argument("--f0", type=Path, required=True)
 parser.add_argument("--mcep", type=Path, required=True)
+
+parser.add_argument("--flat_f0", action="store_true")
+parser.add_argument("--flat_ap", action="store_true")
 
 parser.add_argument("--speaker_id", type=Path, required=True)
 
@@ -37,7 +40,6 @@ args = parser.parse_args()
 speakers, spkind_keys = separate_speaker(np.load(args.speaker_id))
 speaker_num = len(speakers)
 
-param_flat = True
 target_idx = speakers.index(args.target_speaker)
 phn = np.load(args.phn)
 phn_N = int(max(map(np.max, phn.values()))) + 1
@@ -46,8 +48,8 @@ src_f0 = get_separated_values(np.load(args.f0), spkind_keys)[target_idx]
 src_ap = get_separated_values(np.load(args.ap), spkind_keys)[target_idx]
 src_mcep = get_separated_values(np.load(args.mcep), spkind_keys)[target_idx]
 
-ap_generator = AP_generator(phn_N, src_ap, letter_stateseq=gold_transcription, flat=param_flat, mode=args.mode)
-f0_generator = F0_generator(phn_N, src_f0, letter_stateseq=gold_transcription, flat=param_flat, mode=args.mode)
+ap_generator = AP_generator(phn_N, src_ap, letter_stateseq=gold_transcription, flat=args.flat_ap, mode=args.mode)
+f0_generator = F0_generator(phn_N, src_f0, letter_stateseq=gold_transcription, flat=args.flat_f0, mode=args.mode)
 mcep_generator = MCEP_generator(phn_N, src_mcep, letter_stateseq=gold_transcription, gold_transcription=True, mode=args.mode)
 
 sentences = args.key_of_pickuped_sentences
