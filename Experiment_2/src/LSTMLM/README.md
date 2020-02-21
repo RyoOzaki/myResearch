@@ -29,7 +29,7 @@ python convert.py \
 | --using_iterations | -1 | 使用するNPB-DAAのイテレーション (複数指定可) |
 
 ### Another outputs
-None
+* "--output"で指定されたファイル名の先頭に"raw\_"を付したファイル
 
 ----
 ## LSTMLM_train.py

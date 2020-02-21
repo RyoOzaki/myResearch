@@ -26,6 +26,7 @@ sentences = [
     word_stateseq[key][iter, word_durations[key][iter] == 1]
     for key in keys for iter in args.using_iterations
 ]
+raw_sentence = {key: np.array(snt, dtype=int) for key, snt in zip(keys, sentences)}
 
 max_length = max(map(lambda x: x.shape[0], sentences))
 
@@ -45,3 +46,5 @@ np.savez(args.output,
     EOS=EOS_index,
     sentences=sentence_matrix
 )
+
+np.savez(args.output.with_name(f"raw_{args.output.name}"), **raw_sentence)

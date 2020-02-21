@@ -9,6 +9,12 @@ pickup_sentences="aioi_uo_ie aue_ao"
 for case in "${cases[@]}"
 do
   echo ${case}
+  python src/LSTMLM/convert.py \
+    --word_num 10 \
+    --output parameters/${case}/LSTMLM/sentences.npz \
+    --word_stateseq parameters/${case}/NPBDAA/results/word_stateseq.npz \
+    --word_durations parameters/${case}/NPBDAA/results/word_durations.npz
+
   python src/Evaluate/count_word.py \
     --word_num 10 \
     --raw_sentence parameters/${case}/LSTMLM/raw_sentences.npz \
