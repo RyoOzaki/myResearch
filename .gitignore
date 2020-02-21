@@ -110,6 +110,14 @@ figure/
 NPBDAA_result_sample/
 
 # StarGAN-VC
-StarGAN-VC/
+stargan_net.py
+Experiment_1/test_sgvc
+Experiment_1/test_sgvc_new
+StarGAN-VC/*
+Experiment_1/feature_figure
 Experiment_1/segmentation_result/*
 Experiment_1/segmentation_result_figure/*
+Experiment_2/feature
+Experiment_2/out_files*
+Experiment_2/test*
+Experiment_2/transcriptions
