@@ -16,7 +16,6 @@ do
     --speaker speaker_H \
     --output_dir test2_dirs/${tester}/test_2/test \
     --separate 1
-    cp -r grandtruth test2_dirs/${tester}/test_2/
 done
 
 # evaluate

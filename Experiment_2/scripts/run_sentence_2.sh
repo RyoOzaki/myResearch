@@ -3,6 +3,7 @@
 speakers=("speaker_H" "speaker_K" "speaker_M" "speaker_N")
 # speakers=("speaker_H")
 size="10"
+
 # stargan
 param_dir="parameters/stargan"
 for tspk in "${speakers[@]}"

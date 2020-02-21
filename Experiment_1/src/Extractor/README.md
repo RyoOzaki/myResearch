@@ -170,7 +170,7 @@ None
 
 \[\*2\]:
 --source\_dirを0とした時の相対位置で指定．
-例えば，"source/speaker\_1"が話者1のディレクトリの様な構造を持ち，" --source\_dir source/"と指定された場合には，"speaker_dir_layer 1"を指定する.
+例えば，"source/speaker\_1"が話者1のディレクトリの様な構造を持ち，" --source\_dir source/"と指定された場合には，"--speaker_dir_layer 1"を指定する.
 
 ### Another outputs
 "--with\_speaker\_id"が指定された場合，--output\_dirの中に"speaker\_id.npz"という名前で話者を表すnpzファイルが作成される．
