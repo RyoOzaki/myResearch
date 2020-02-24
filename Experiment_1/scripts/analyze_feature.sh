@@ -5,7 +5,7 @@ output_dir="feature_figure"
 
 mkdir -p ${output_dir}
 
-for file in `ls ${feature_dir} | grep ".*20msec.*npz$" | grep -v "phn" | grep -v "wrd"`;
+for file in `ls ${feature_dir} | grep ".*20msec.*npz$" | grep -v "phn" | grep -v "wrd" | grep -v "f0"`;
 do
   echo ${file}
 

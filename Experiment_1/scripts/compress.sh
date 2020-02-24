@@ -73,7 +73,7 @@ python src/DSAE-PBHL/DSAE_train.py \
 python src/StarGAN-VC/train_stargan-vc.py \
   --train_data feature/gaunorm_with_f0_spkind_mcep_all_speaker_5msec.npz \
   --speaker_id feature/speaker.npz \
-  --output feature_tmp/sgvc_gaunorm_with_f0_spkind_mcep_all_speaker_20msec_final.npz \
+  --output feature/sgvc_gaunorm_with_f0_spkind_mcep_all_speaker_20msec.npz \
   --batchsize 8 \
   --epoch 2000 \
   --gpu 1
