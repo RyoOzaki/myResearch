@@ -105,25 +105,16 @@ mv feature/ap.npz feature/ap_all_speaker_5msec.npz
 #   feature/mfcc_speaker_K_20msec.npz (pickup by mfcc_all_speaker_20msec.npz)
 #   feature/mfcc_speaker_M_20msec.npz (pickup by mfcc_all_speaker_20msec.npz)
 #   feature/mfcc_speaker_N_20msec.npz (pickup by mfcc_all_speaker_20msec.npz)
-python src/Extractor/pickup.py \
-  --source feature/mfcc_all_speaker_20msec.npz \
-  --output feature/mfcc_speaker_H_20msec.npz \
-  --keyword speaker_H
+speakers=("speaker_H" "speaker_K" "speaker_M" "speaker_N")
 
-python src/Extractor/pickup.py \
-  --source feature/mfcc_all_speaker_20msec.npz \
-  --output feature/mfcc_speaker_K_20msec.npz \
-  --keyword speaker_K
+for spk in "${speakers[@]}"
+do
+  python src/Extractor/pickup.py \
+    --source feature/mfcc_all_speaker_20msec.npz \
+    --output feature/mfcc_${spk}_20msec.npz \
+    --keyword ${spk}
+done
 
-python src/Extractor/pickup.py \
-  --source feature/mfcc_all_speaker_20msec.npz \
-  --output feature/mfcc_speaker_M_20msec.npz \
-  --keyword speaker_M
-
-python src/Extractor/pickup.py \
-  --source feature/mfcc_all_speaker_20msec.npz \
-  --output feature/mfcc_speaker_N_20msec.npz \
-  --keyword speaker_N
 
 #==============================================
 # clean dataset dir

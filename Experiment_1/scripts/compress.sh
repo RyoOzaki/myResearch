@@ -46,25 +46,15 @@ python src/DSAE-PBHL/DSAE_PBHL_train.py \
 #   feature/dsae_uninorm_mfcc_speaker_N_20msec.npz (compress uninorm_mfcc_speaker_N_20msec.npz)
 DSAE_STRUCTURE="13 8 5 3"
 
-python src/DSAE-PBHL/DSAE_train.py \
-  --train_data feature/uninorm_mfcc_speaker_H_20msec.npz \
-  --output feature/dsae_uninorm_mfcc_speaker_H_20msec.npz \
-  --structure ${DSAE_STRUCTURE}
+speakers=("speaker_H" "speaker_K" "speaker_M" "speaker_N")
 
-python src/DSAE-PBHL/DSAE_train.py \
-  --train_data feature/uninorm_mfcc_speaker_K_20msec.npz \
-  --output feature/dsae_uninorm_mfcc_speaker_K_20msec.npz \
-  --structure ${DSAE_STRUCTURE}
-
-python src/DSAE-PBHL/DSAE_train.py \
-  --train_data feature/uninorm_mfcc_speaker_M_20msec.npz \
-  --output feature/dsae_uninorm_mfcc_speaker_M_20msec.npz \
-  --structure ${DSAE_STRUCTURE}
-
-python src/DSAE-PBHL/DSAE_train.py \
-  --train_data feature/uninorm_mfcc_speaker_N_20msec.npz \
-  --output feature/dsae_uninorm_mfcc_speaker_N_20msec.npz \
-  --structure ${DSAE_STRUCTURE}
+for spk in "${speakers[@]}"
+do
+  python src/DSAE-PBHL/DSAE_train.py \
+    --train_data feature/uninorm_mfcc_${spk}_20msec.npz \
+    --output feature/dsae_uninorm_mfcc_${spk}_20msec.npz \
+    --structure ${DSAE_STRUCTURE}
+done
 
 #==============================================
 # compress mcep using StarGAN-VC

@@ -213,11 +213,11 @@ print("Done!")
 letter_ARI = np.zeros(train_iter)
 letter_macro_f1_score = np.zeros(train_iter)
 letter_micro_f1_score = np.zeros(train_iter)
-letter_confusion_matrix = np.zeros((train_iter, phn_label_N, letter_num))
+letter_confusion_matrix = np.zeros((train_iter, phn_label_N, letter_num), dtype=int)
 word_ARI = np.zeros(train_iter)
 word_macro_f1_score = np.zeros(train_iter)
 word_micro_f1_score = np.zeros(train_iter)
-word_confusion_matrix = np.zeros((train_iter, wrd_label_N, word_num))
+word_confusion_matrix = np.zeros((train_iter, wrd_label_N, word_num), dtype=int)
 
 #%% calculate ARI
 print("Calculating ARI...")
@@ -274,9 +274,30 @@ plt.title("Resample times")
 plt.plot(range(train_iter), resample_times, ".-")
 plt.savefig(figure_dir / "Resample_times.png")
 
-#%% TODO plot confusion matrix
+plt.clf()
+plt.title(f"Word confusion matrix")
+plt.imshow(word_confusion_matrix[-1])
+for i, j in product(range(truth_num), range(pred_num)):
+    if word_confusion_matrix[-1, i, j] != 0:
+        plt.text(j, i, word_confusion_matrix[-1, i, j], ha="center", va="center", color="white")
+plt.yticks(np.arange(truth_num), map(lambda x: f"{x:2d}", np.arange(truth_num)))
+plt.xticks(np.arange(pred_num), map(lambda x: f"{x:2d}", np.arange(pred_num)))
+plt.ylabel("Truth index")
+plt.xlabel("Predict index")
+plt.savefig(figure_dir / f"Word_confusion_matrix.png")
 
-#%% TODO save confusion matrix
+plt.clf()
+plt.title(f"Letter confusion matrix")
+plt.imshow(letter_confusion_matrix[-1])
+for i, j in product(range(truth_num), range(pred_num)):
+    if letter_confusion_matrix[-1, i, j] != 0:
+        plt.text(j, i, letter_confusion_matrix[-1, i, j], ha="center", va="center", color="white")
+plt.yticks(np.arange(truth_num), map(lambda x: f"{x:2d}", np.arange(truth_num)))
+plt.xticks(np.arange(pred_num), map(lambda x: f"{x:2d}", np.arange(pred_num)))
+plt.ylabel("Truth index")
+plt.xlabel("Predict index")
+plt.savefig(figure_dir / f"Letter_confusion_matrix.png")
+
 np.savetxt(summary_dir / "Letter_ARI.txt", letter_ARI)
 np.savetxt(summary_dir / "Letter_macro_F1_score.txt", letter_macro_f1_score)
 np.savetxt(summary_dir / "Letter_micro_F1_score.txt", letter_micro_f1_score)

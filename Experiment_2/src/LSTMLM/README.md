@@ -1,5 +1,8 @@
 # LSTMLM (LSTM language model)
 
+Required: [LSTM_language_model](https://github.com/RyoOzaki/LSTM_language_model)
+(branch version_1)
+
 ----
 ## convert.py
 LSTM-LMの学習用にNPB-DAAの分節化結果を編集する．
