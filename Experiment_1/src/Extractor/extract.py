@@ -120,7 +120,7 @@ candidates = {
     "winfunc": ["hamming", "none"]
 }
 
-enabled_feature_types = ["mfcc", "mcep", "mspec", "logmspec"]
+enabled_feature_types = ["mfcc", "mspec", "logmspec"]
 
 parser = ArgumentParser(formatter_class=ArgumentDefaultsHelpFormatter)
 
@@ -213,12 +213,6 @@ for file in source_dir.glob(f"**/*.{extension}"):
         np.savetxt(file.with_suffix(".mfcc"), mfcc)
         np.savetxt(file.with_suffix(".dmfcc"), dmfcc)
         np.savetxt(file.with_suffix(".ddmfcc"), ddmfcc)
-
-    if "mcep" in feature_type:
-        numcep = parameters["nfilt"]
-        mcep = psf_mfcc(signal, **{**parameters, "samplerate": samplerate, "nfft": nfft, "numcep": numcep})
-        N = N or mcep.shape[0]
-        np.savetxt(file.with_suffix(".mcep"), mcep)
 
     # for mspec and logmspec
     need_parameters = ["samplerate", "winlen", "winstep", "nfilt", "nfft", "lowfreq", "highfreq", "preemph", "winfunc"]
