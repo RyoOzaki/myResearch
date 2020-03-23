@@ -251,7 +251,7 @@ for file in source_dir.glob(f"**/*.{extension}"):
             else:
                 phn, Ft = _label_cord(phn_file, phn_label_dict, N, window_len, step_len)
             np.savetxt(file.with_suffix(".phn"), phn, fmt="%d")
-            np.savetxt(file.with_suffix(".Ft_phn"), phn, fmt="%d")
+            np.savetxt(file.with_suffix(".Ft_phn"), Ft, fmt="%d")
 
         if args.wrd_label_extension:
             wrd_file = file.with_suffix(f".{args.wrd_label_extension}")
@@ -260,6 +260,6 @@ for file in source_dir.glob(f"**/*.{extension}"):
             else:
                 wrd, Ft = _label_cord(wrd_file, wrd_label_dict, N, window_len, step_len)
             np.savetxt(file.with_suffix(".wrd"), wrd, fmt="%d")
-            np.savetxt(file.with_suffix(".Ft_wrd"), wrd, fmt="%d")
+            np.savetxt(file.with_suffix(".Ft_wrd"), Ft, fmt="%d")
 
 print(f"{cnt} files were process.")

@@ -93,6 +93,9 @@ parser.add_argument("--Ft_wrd", type=Path, required=True)
 
 parser.add_argument("--figsize", type=int, nargs=2, default=[16, 8])
 parser.add_argument("--keep_dir", action="store_true")
+parser.add_argument("--cmap", default="tab20")
+parser.add_argument("--phn_cmap")
+parser.add_argument("--wrd_cmap")
 
 parser.add_argument("--figure_dir", type=Path, required=True)
 
@@ -105,8 +108,17 @@ config_parser = load_config(args.model)
 section = config_parser["model"]
 word_num = section["word_num"]
 letter_num = section["letter_num"]
-phn_color_list = [cm.tab20(float(i)/letter_num) for i in range(letter_num)]
-wrd_color_list = [cm.tab20(float(i)/word_num) for i in range(word_num)]
+cmap = plt.get_cmap(args.cmap)
+if args.phn_cmap:
+    phn_cmap = plt.get_cmap(args.phn_cmap)
+else:
+    phn_cmap = cmap
+if args.wrd_cmap:
+    wrd_cmap = plt.get_cmap(args.wrd_cmap)
+else:
+    wrd_cmap = cmap
+phn_color_list = [phn_cmap(float(i) / letter_num) for i in range(letter_num)]
+wrd_color_list = [wrd_cmap(float(i) / word_num) for i in range(word_num)]
 
 if args.result_dir:
     result_dir = args.result_dir
