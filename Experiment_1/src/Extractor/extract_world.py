@@ -1,12 +1,10 @@
 import numpy as np
 from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 from pathlib import Path
-from python_speech_features.base import delta as psf_delta
 from modules.loader import *
 from modules.utility import *
 import re
 from math import ceil, floor
-from scipy.fftpack import dct
 import pyworld as pw
 
 def _load_label_list(files, sp=None):
@@ -65,7 +63,6 @@ def _label_cord_mfcc_frame(label_file, label_list, length, init_val=0):
 default_parameters = {
     "samplerate": None,
     "frame_period": 0.005,
-    "numcep": 13,
     "nfilt": 26,
     "fftsize": 1024,
 }
@@ -73,7 +70,6 @@ default_parameters = {
 parameters_types = {
     "samplerate": int,
     "frame_period": float,
-    "numcep": int,
     "nfilt": int,
     "fftsize": int
 }
@@ -81,12 +77,11 @@ parameters_types = {
 parameters_help = {
     "samplerate": "the sample rate of the signal in extracting. if it is lower than the wave files one, it do downsampling.",
     "frame_period": "the length of the analysis window in seconds.",
-    "numcep": "the number of cepstrum to return.",
     "nfilt": "the number of filters in the filterbank.",
     "fftsize": "the number of fft window size"
 }
 
-enabled_feature_types = ["mfcc", "mcep", "spenv", "f0", "ap"]
+enabled_feature_types = ["mcep", "spenv", "f0", "ap"]
 
 parser = ArgumentParser(formatter_class=ArgumentDefaultsHelpFormatter)
 
@@ -95,7 +90,7 @@ parser.add_argument("--source_dir", type=Path, default=Path("./"), help="source 
 parser.add_argument("--format", default="wave", choices=["wave", "sph"], help="format of input files. Default is wave. you can choice [wave/sph]")
 parser.add_argument("--extension", default="wav", help="extension of input files")
 
-parser.add_argument("--feature_type", nargs="+", default=["mfcc",], choices=["all", *enabled_feature_types], help="output format of speech features.")
+parser.add_argument("--feature_type", nargs="+", default=["mcep",], choices=["all", *enabled_feature_types], help="output format of speech features.")
 
 parser.add_argument("--label_format", default="none", choices=["none", "time", "wave_frame", "mfcc_frame"], help="format of label")
 parser.add_argument("--phn_label_extension", help="extension of phoneme label")
@@ -112,7 +107,6 @@ for name in default_parameters:
         default=value,
         help=help
     )
-parser.add_argument("--delta_winlen", type=int, default=2, help="delta_window size")
 
 args = parser.parse_args()
 
@@ -165,29 +159,18 @@ for file in source_dir.glob(f"**/*.{extension}"):
     ap = pw.d4c(signal, f0, t, samplerate, fft_size=args.fftsize)  # 非周期性指標の抽出
     mcep = pw.code_spectral_envelope(sp, samplerate, args.nfilt) # メルケプストラムの抽出
 
+    N = mcep.shape[0]
+
     if "spenv" in feature_type:
-        N = N or mcep.shape[0]
         np.savetxt(file.with_suffix(".spenv"), sp)
 
-    if "mfcc" in feature_type:
-        mfcc = mcep[:, :args.numcep]
-        dmfcc = psf_delta(mfcc, args.delta_winlen)
-        ddmfcc = psf_delta(dmfcc, args.delta_winlen)
-        N = N or mfcc.shape[0]
-        np.savetxt(file.with_suffix(".mfcc"), mfcc)
-        np.savetxt(file.with_suffix(".dmfcc"), dmfcc)
-        np.savetxt(file.with_suffix(".ddmfcc"), ddmfcc)
-
     if "mcep" in feature_type:
-        N = N or mcep.shape[0]
         np.savetxt(file.with_suffix(".mcep"), mcep)
 
     if "f0" in feature_type:
-        N = N or f0.shape[0]
         np.savetxt(file.with_suffix(".f0"), f0)
 
     if "ap" in feature_type:
-        N = N or ap.shape[0]
         np.savetxt(file.with_suffix(".ap"), ap)
 
     if args.label_format != "none":
