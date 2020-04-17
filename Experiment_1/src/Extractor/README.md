@@ -85,10 +85,8 @@ python extract_world.py \
   --feature_type <FEATURE_TYPE> \
   --samplerate <SAMPLERATE> \
   --frame_period <FRAME_PERIOD> \
-  --numcep <NUMCEP> \
   --nfilt <NFILT> \
   --fftsize <FFT_SIZE> \
-  --delta_winlen <DELTA_WINLEN> \
   --label_format <LABEL_FORMAT> \
   --phn_label_extension <PHN_LABEL_EXTENSION> \
   --wrd_label_extension <WRD_LABEL_EXTENSION> \
@@ -106,13 +104,11 @@ None
 | --source_dir | ./ | 対象ファイルのルートディレクトリ |
 | --format | wave | wave / sph のうちどれか |
 | --extension | wav | 対象ファイルの拡張子 |
-| --feature_type | mfcc | all / mfcc / mcep / spenv / f0 / ap のうちどれか (複数選択可，allはすべて) |
+| --feature_type | mcep | all / mcep / spenv / f0 / ap のうちどれか (複数選択可，allはすべて) |
 | --samplerate | \[\*1\] | サンプリング周波数 |
 | --frame_period | 0.005 | ウィンドウ幅・シフト幅 (sec) |
-| --numcep | 13 | ケプストラムの次元数 |
 | --nfilt | 26 | フィルタバンク数 |
 | --fftsize | 1024 | FFTサイズ |
-| --delta_winlen | 2 | 微分近似で用いる点数 |
 | --label_format | none | none / time / wave_frame / mfcc_frame のうちどれか |
 | --phn_label_extension | | 音素ラベルの拡張子 |
 | --wrd_label_extension | | 単語ラベルの拡張子 |
